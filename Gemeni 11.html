@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="so">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dahabi Academy - Production Registration System</title>
+  <style>
+    /* VARIABLES - DESIGN SYSTEM & RESPONSIVE TYPOGRAPHY */
+    :root {
+      --primary-orange: #F06522;
+      --primary-orange-hover: #d45316;
+      --primary-blue: #00A3E0;
+      --primary-blue-alpha: rgba(0, 163, 224, 0.15);
+      --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+      --text-dark: #2d3748;
+      --text-muted: #718096;
+      --card-bg: #ffffff;
+      --border-color: #e2e8f0;
+      --error-color: #e53e3e;
+      --error-bg: #fff5f5;
+      
+      --font-title: clamp(1.25rem, 4vw, 1.5rem);
+      --font-body: clamp(0.875rem, 2.5vw, 0.938rem);
+      --font-label: clamp(0.813rem, 2vw, 0.875rem);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background: var(--bg-gradient);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: clamp(10px, 5vw, 40px) 20px;
+      color: var(--text-dark);
+      font-size: var(--font-body);
+    }
+
+    @keyframes formEntrance {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .form-container {
+      background: var(--card-bg);
+      max-width: 550px;
+      width: 100%;
+      border-radius: 16px;
+      padding: clamp(20px, 6vw, 40px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.03), 0 20px 48px rgba(0, 0, 0, 0.05);
+      border-top: 6px solid var(--primary-orange);
+      position: relative;
+      animation: formEntrance 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      overflow: hidden;
+    }
+
+    .form-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .logo-wrapper {
+      position: relative;
+      width: 90px;
+      height: 90px;
+      margin: 0 auto 15px auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .logo-outer-circle {
+      position: absolute;
+      width: 84px;
+      height: 84px;
+      border: 3.5px solid var(--primary-blue);
+      border-radius: 50%;
+    }
+
+    .logo-inner-circle {
+      position: absolute;
+      width: 72px;
+      height: 72px;
+      border: 2px solid var(--primary-orange);
+      border-radius: 50%;
+    }
+
+    .logo-text-container {
+      position: relative;
+      font-size: 32px;
+      font-weight: 900;
+      font-family: 'Georgia', serif;
+      line-height: 1;
+      z-index: 2;
+    }
+
+    .char-d { color: var(--primary-orange); transform: translateX(4px); display: inline-block; }
+    .char-a { color: var(--primary-blue); font-size: 26px; transform: translateX(-4px) translateY(2px); display: inline-block; }
+
+    .form-header h1 {
+      font-size: var(--font-title);
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+    .form-header h1 span.dahabi { color: var(--primary-orange); }
+    .form-header h1 span.academy { color: var(--primary-blue); }
+
+    .form-header p {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-top: 5px;
+    }
+
+    form section {
+      margin-bottom: 28px;
+    }
+
+    fieldset {
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 20px;
+      background-color: #fcfdfd;
+    }
+
+    legend {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--primary-blue);
+      padding: 0 10px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .input-group {
+      margin-top: 15px;
+      margin-bottom: 5px;
+    }
+    .input-group:first-of-type {
+      margin-top: 5px;
+    }
+
+    label {
+      display: block;
+      font-size: var(--font-label);
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: #4a5568;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    select,
+    textarea {
+      width: 100%;
+      padding: clamp(10px, 3vw, 13px) 16px;
+      border: 2px solid var(--border-color);
+      border-radius: 8px;
+      font-size: var(--font-body);
+      transition: all 0.25s ease;
+      background-color: #f8fafc;
+      color: var(--text-dark);
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--primary-blue);
+      background-color: #fff;
+      box-shadow: 0 0 0 4px var(--primary-blue-alpha);
+    }
+
+    .gender-container {
+      display: flex;
+      gap: 24px;
+      margin-top: 5px;
+      padding: 4px 0;
+    }
+
+    .gender-option {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .gender-option input[type="radio"] {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 22px;
+      height: 22px;
+      border: 2px solid #cbd5e0;
+      border-radius: 50%;
+      margin-right: 8px;
+      outline: none;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      display: inline-grid;
+      place-content: center;
+    }
+
+    .gender-option input[type="radio"]:checked {
+      border-color: var(--primary-orange);
+    }
+
+    .gender-option input[type="radio"]::before {
+      content: "";
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      transform: scale(0);
+      transition: 0.15s transform ease-in-out;
+      background-color: var(--primary-orange);
+    }
+
+    .gender-option input[type="radio"]:checked::before {
+      transform: scale(1);
+    }
+
+    .gender-option label {
+      margin-bottom: 0;
+      cursor: pointer;
+      font-weight: 500;
+    }
+
+   .phone-flex {
+  display: flex;
+  gap: 10px;
+}
+
+.phone-flex select {
+  width: 45%;
+  cursor: pointer;
+}
+
+.phone-flex input {
+  width: 55%;
+    }
+        /* DYNAMIC PRICE BOX */
+    input.price-box {
+      background-color: #edf2f7;
+      border-color: #cbd5e0;
+      color: var(--primary-orange);
+      font-weight: 700;
+      cursor: not-allowed;
+    }
+    
+    .price-changed { animation: pricePop 0.4s ease-in-out; }
+    @keyframes pricePop {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.02); box-shadow: 0 0 8px rgba(240, 101, 34, 0.2); }
+      100% { transform: scale(1); }
+    }
+
+    .whatsapp-notice {
+      background-color: #e8f5e9;
+      border: 1px dashed #2e7d32;
+      padding: 12px;
+      border-radius: 8px;
+      margin-top: 10px;
+      font-size: 13px;
+      color: #1b5e20;
+      text-align: center;
+    }
+
+    .submit-btn {
+      width: 100%;
+      background: var(--primary-orange);
+      color: white;
+      border: none;
+      padding: clamp(12px, 4vw, 15px);
+      font-size: 16px;
+      font-weight: 700;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      margin-top: 10px;
+      box-shadow: 0 4px 12px rgba(240, 101, 34, 0.25);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .submit-btn:hover:not(:disabled) {
+      background: var(--primary-orange-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(240, 101, 34, 0.35);
+    }
+
+    .submit-btn:disabled {
+      background: #cbd5e0;
+      color: #718096;
+      cursor: not-allowed;
+      box-shadow: none;
+      transform: none;
+    }
+
+    .spinner {
+      display: none;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 0.7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .error-msg {
+      color: var(--error-color);
+      font-size: 12px;
+      margin-top: 6px;
+      display: none;
+      font-weight: 500;
+      animation: showError 0.25s ease forwards;
+    }
+    @keyframes showError {
+      from { opacity: 0; transform: translateY(-4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .input-error input, .input-error select, .input-error textarea {
+      border-color: var(--error-color) !important;
+      background-color: var(--error-bg);
+    }
+    
+    .form-locked input, .form-locked select, .form-locked textarea {
+      pointer-events: none;
+      opacity: 0.6;
+      background-color: #edf2f7;
+    }
+
+    .success-popup {
+      display: none;
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: linear-gradient(rgba(0, 40, 80, 0.9), rgba(0, 30, 60, 0.94));
+      border-radius: 16px;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 30px;
+      z-index: 10;
+      animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    
+    .success-popup h2 { color: #ffffff; font-size: 24px; margin-bottom: 12px; font-weight: 700; }
+    .success-popup p { color: #e2e8f0; font-size: 14px; line-height: 1.6; max-width: 400px; margin-bottom: 25px; }
+
+    .back-btn {
+      background: transparent; color: #ffffff; border: 2px solid rgba(255, 255, 255, 0.4);
+      padding: 10px 24px; font-size: 14px; font-weight: 600; border-radius: 6px; cursor: pointer; transition: all 0.25s ease;
+    }
+    .back-btn:hover { background: rgba(255, 255, 255, 0.15); border-color: #ffffff; }
+    @keyframes fadeIn { from { opacity: 0; transform: scale(0.97); } to { opacity: 1; transform: scale(1); } }
+  </style>
+</head>
+<body>
+
+  <main class="form-container">
+    <div class="success-popup" id="successCard" role="dialog" aria-modal="true" aria-labelledby="successTitle">
+      <div style="font-size: 60px; margin-bottom: 15px;">👍🏽🎉</div>
+      <h2 id="successTitle">Isdiwaangalintu Waa Guul!</h2>
+      <p>Ku soo dhawaada Dahabi Academy. Xogtaada isdiwaangalinta si guul leh ayaa loo helay. Dhawaan ayaan kula soo xiriiri doonaa.</p>
+      <button class="back-btn" type="button" onclick="closeSuccess()">Dib Ulaabo</button>
+    </div>
+
+    <header class="form-header">
+      <div class="logo-wrapper">
+        <div class="logo-outer-circle"></div>
+        <div class="logo-inner-circle"></div>
+        <div class="logo-text-container">
+          <span class="char-d">D</span><span class="char-a">A</span>
+        </div>
+      </div>
+      <h1><span class="dahabi">DAHABI</span> <span class="academy">ACADEMY</span></h1>
+      <p>Foomka Isdiwaangalinta Rasmiga Ah (Cloud Firestore)</p>
+    </header>
+
+    <form id="regForm" onsubmit="validateAndSubmitForm(event)" novalidate>
+      
+      <section>
+        <fieldset>
+          <legend>Qaybta 1<sup>aad</sup> Xogta Shaqsiga</legend>
+          
+          <div class="input-group">
+            <label for="firstName">First Name *</label>
+            <input type="text" id="firstName" name="firstName" placeholder="Gali magacaaga koowaad" maxlength="30" aria-required="true" required>
+            <div class="error-msg" id="error-firstName" role="alert">Fadlan qor magacaaga koowaad</div>
+          </div>
+          
+          <div class="input-group">
+            <label for="middleName">Middle Name *</label>
+            <input type="text" id="middleName" name="middleName" placeholder="Gali magaca aabaha" maxlength="30" aria-required="true" required>
+            <div class="error-msg" id="error-middleName" role="alert">Fadlan qor magaca aabaha</div>
+          </div>
+          
+          <div class="input-group">
+            <label for="lastName">Last Name *</label>
+            <input type="text" id="lastName" name="lastName" placeholder="Gali awowgaa" maxlength="30" aria-required="true" required>
+            <div class="error-msg" id="error-lastName" role="alert">Fadlan qor magaca awowga</div>
+          </div>
+          
+          <div class="input-group">
+            <span id="genderLabel" style="font-size: var(--font-label); font-weight: 600; color: #4a5568; display: block; margin-bottom: 6px;">Gender *</span>
+            <div class="gender-container" role="radiogroup" aria-labelledby="genderLabel">
+              <div class="gender-option">
+                <input type="radio" id="male" name="gender" value="Male" aria-required="true" required>
+                <label for="male">Male</label>
+              </div>
+              <div class="gender-option">
+                <input type="radio" id="female" name="gender" value="Female" aria-required="true" required>
+                <label for="female">Female</label>
+              </div>
+            </div>
+            <div class="error-msg" id="error-gender" role="alert">Fadlan dooro lab ama dheddig</div>
+          </div>
+          
+          <div class="input-group">
+            <label for="email">Email Address *</label>
+            <input type="email" id="email" name="email" placeholder="tusaale@gmail.com" aria-required="true" required>
+            <div class="error-msg" id="error-email" role="alert">Fadlan qor foomka email-ka oo sax ah</div>
+          </div>
+          
+          <div class="input-group">
+            <label for="phone">Phone Number *</label>
+            <div class="phone-flex">
+              <select id="countryCode" name="countryCode" aria-label="Country Dial Code" aria-required="true" required>
+                <option value="+252">🇸🇴 SO (+252)</option>
+                <option value="+251">🇪🇹 ET (+251)</option>
+                <option value="+254">🇰🇪 KE (+254)</option>
+                <option value="+966">🇸🇦 SA (+966)</option>
+                <option value="+971">🇦🇪 AE (+971)</option>
+                <option value="+1">🇺🇸 US (+1)</option>
+                <option value="+44">🇬🇧 UK (+44)</option>
+                <option value="+46">🇸🇪 SE (+46)</option>
+              </select>
+              <input type="text" id="phone" name="phone" placeholder="61xxxxxxx" pattern="[0-9]{6,9}" maxlength="9" aria-label="Phone Number without country code" aria-required="true" required>
+            </div>
+            <div class="error-msg" id="error-phone" role="alert">Fadlan qor nambarkaaga tel-ka oo sax ah (Kaliya 6 ilaa 9 nambar)</div>
+          </div>
+        </fieldset>
+      </section>
+      
+      <section>
+        <fieldset>
+          <legend>Qaybta 2<sup>aad</sup> Doorashada Koorsada</legend>
+          
+          <div class="input-group">
+            <label for="course">Select Course *</label>
+            <select id="course" name="course" onchange="updateCoursePrice()" aria-required="true" required>
+              <option value="">-- Dooro Xirfadda Aad Rabto --</option>
+              <option value="photoshop">Adobe Photoshop</option>
+              <option value="illustrator">Adobe Illustrator</option>
+              <option value="indesign">Adobe Indesign</option>
+              <option value="premier">Adobe Premier Pro</option>
+              <option value="aftereffects">After Effects</option>
+              <option value="motion">Motion Graphic</option>
+              <option value="vn">VN Video Editor</option>
+              <option value="capcut">Cap Cut</option>
+              <option value="webdesign">Web Design</option>
+              <option value="programming">Programming</option>
+              <option value="ai">Learn AI</option>
+              <option value="english">Speaking English</option>
+              <option value="public">Public Speaking</option>
+              <option value="cyber">Cyber Security</option>
+              <option value="quran">Learning Qur'an</option>
+              <option value="social">Social Media Management</option>
+            </select>
+            <div class="error-msg" id="error-course" role="alert">Fadlan dooro mid ka mid ah koorsooyinka</div>
+          </div>
+
+          <div class="input-group">
+            <label for="coursePrice">Course Price (Qiimaha Koorsada)</label>
+            <input type="text" id="coursePrice" name="coursePrice" class="price-box" placeholder="Dooro koorsada si aad u aragto qiimaha" readonly>
+          </div>
+        </fieldset>
+      </section>
+
+      <section>
+        <fieldset>
+          <legend>Qaybta 3<sup>aad</sup> Macluumaad Dheeraad ah</legend>
+          
+          <div class="input-group">
+            <label for="message">Haddii Aad Qabto Su'aal Halkan Ku Qor (Optional)</label>
+            <textarea id="message" name="message" rows="4" placeholder="Halkan ku qor fariintaada hadday jirto..." maxlength="500"></textarea>
+          </div>
+
+          <div class="whatsapp-notice">
+            📢 <b>Ogeysiis:</b> Fadlan marka aad foomka dirto, rasiidka lacag-bixinta si toos ah noogu soo dir WhatsApp-ka si loo hubaayo rasiidkaaga.
+          </div>
+        </fieldset>
+      </section>
+
+      <button type="submit" class="submit-btn" id="submitBtn">
+        <div class="spinner" id="btnSpinner" aria-hidden="true"></div>
+        <span id="btnText">ISDIWAANGALI HADA</span>
+      </button>
+    </form>
+  </main>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
+    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+
+    // Firebase Configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyDrQ-tycjjDU4gek1jz07IIg30VFio-1so",
+      authDomain: "dahabi-academy.firebaseapp.com",
+      projectId: "dahabi-academy",
+      storageBucket: "dahabi-academy.firebasestorage.app",
+      messagingSenderId: "754314547074",
+      appId: "1:754314547074:web:cac5ac7ae057af9c0a499b"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    window.validateAndSubmitForm = async function(event) {
+      event.preventDefault();
+      
+      const form = document.getElementById('regForm');
+      let isValid = true;
+      let firstErrorElement = null;
+      
+      const fields = ['firstName', 'middleName', 'lastName', 'email', 'phone', 'course'];
+      
+      // Clean up previous error visuals
+      fields.forEach(field => {
+        document.getElementById(field).parentElement.classList.remove('input-error');
+        document.getElementById('error-' + field).style.display = 'none';
+      });
+      document.getElementById('error-gender').style.display = 'none';
+
+      // Validate inputs
+      fields.forEach(field => {
+        const input = document.getElementById(field);
+        const cleanVal = sanitizeValue(input.value);
+        input.value = cleanVal;
+
+        if (!cleanVal) {
+          input.parentElement.classList.add('input-error');
+          const errBox = document.getElementById('error-' + field);
+          errBox.style.display = 'block';
+          isValid = false;
+          if (!firstErrorElement) firstErrorElement = input;
+        }
+      });
+
+      // Email Format Check
+      const emailInput = document.getElementById('email');
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (emailInput.value && !emailPattern.test(emailInput.value)) {
+        emailInput.parentElement.classList.add('input-error');
+        const errBox = document.getElementById('error-email');
+        errBox.innerText = "Fadlan gali foomka email-ka oo sax ah";
+        errBox.style.display = 'block';
+        isValid = false;
+        if (!firstErrorElement) firstErrorElement = emailInput;
+      }
+
+      // Phone Format Check
+      const phoneInput = document.getElementById('phone');
+      const phonePattern = /^[0-9]{6,9}$/;
+      if (phoneInput.value && !phonePattern.test(phoneInput.value)) {
+        phoneInput.parentElement.parentElement.classList.add('input-error');
+        document.getElementById('error-phone').style.display = 'block';
+        isValid = false;
+        if (!firstErrorElement) firstErrorElement = phoneInput;
+      }
+
+      // Gender Validation
+      const maleChecked = document.getElementById('male').checked;
+      const femaleChecked = document.getElementById('female').checked;
+      if (!maleChecked && !femaleChecked) {
+        document.getElementById('error-gender').style.display = 'block';
+        isValid = false;
+        if (!firstErrorElement) firstErrorElement = document.getElementById('male');
+      }
+
+      if (!isValid) {
+        if (firstErrorElement) {
+          firstErrorElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          firstErrorElement.focus();
+        }
+        return;
+      }
+
+      // Loading state
+      const submitBtn = document.getElementById('submitBtn');
+      const btnSpinner = document.getElementById('btnSpinner');
+      const btnText = document.getElementById('btnText');
+
+      form.classList.add('form-locked');
+      submitBtn.disabled = true;
+      btnSpinner.style.display = "block";
+      btnText.innerText = "Gudbinaya xogta...";
+
+      try {
+        // Construct Payload for Firestore Directly
+        const submissionPayload = {
+          firstName: sanitizeValue(document.getElementById('firstName').value),
+          middleName: sanitizeValue(document.getElementById('middleName').value),
+          lastName: sanitizeValue(document.getElementById('lastName').value),
+          gender: document.getElementById('male').checked ? "Male" : "Female",
+          email: sanitizeValue(document.getElementById('email').value),
+          phone: sanitizeValue(document.getElementById('phone').value),
+          countryCode: document.getElementById('countryCode').value,
+          course: document.getElementById('course').value,
+          coursePrice: document.getElementById('coursePrice').value,
+          message: sanitizeValue(document.getElementById('message').value),
+          createdAt: new Date().toISOString()
+        };
+
+        // Add document to Firestore 'registrations' collection
+        await addDoc(collection(db, "registrations"), submissionPayload);
+
+        // Reset state mechanics
+        form.classList.remove('form-locked');
+        submitBtn.disabled = false;
+        btnSpinner.style.display = "none";
+        btnText.innerText = "ISDIWAANGALI HADA";
+
+        // Show Success Popup
+        const successCard = document.getElementById('successCard');
+        successCard.style.display = 'flex';
+        successCard.focus();
+
+      } catch (error) {
+        console.error("Firebase Storage Bypass Error: ", error);
+        alert("Waan ka xunnahay, qalad ayaa dhacay intii xogta la dirayay. Fadlan dib u tijaabi.");
+        form.classList.remove('form-locked');
+        submitBtn.disabled = false;
+        btnSpinner.style.display = "none";
+        btnText.innerText = "ISDIWAANGALI HADA";
+      }
+    };
+  </script>
+
+  <script>
+    const coursePrices = {
+      "photoshop": "$25.00 USD", "illustrator": "$25.00 USD", "indesign": "$20.00 USD",
+      "premier": "$30.00 USD", "aftereffects": "$35.00 USD", "motion": "$40.00 USD",
+      "vn": "$15.00 USD", "capcut": "$15.00 USD", "webdesign": "$45.00 USD",
+      "programming": "$60.00 USD", "ai": "$50.00 USD", "english": "$20.00 USD",
+      "public": "$25.00 USD", "cyber": "$55.00 USD", "quran": "$15.00 USD", "social": "$30.00 USD"
+    };
+
+    function updateCoursePrice() {
+      const courseSelect = document.getElementById('course');
+      const priceInput = document.getElementById('coursePrice');
+      const selectedCourse = courseSelect.value;
+
+      if (selectedCourse && coursePrices[selectedCourse]) {
+        priceInput.value = coursePrices[selectedCourse];
+        priceInput.classList.remove('price-changed');
+        void priceInput.offsetWidth; 
+        priceInput.classList.add('price-changed');
+      } else {
+        priceInput.value = "";
+      }
+    }
+
+    function sanitizeValue(val) {
+      if (!val) return "";
+      let clean = val.trim().replace(/\s+/g, ' ');
+      return escapeHTML(clean);
+    }
+
+    function escapeHTML(str) {
+      return str.replace(/[&<>"']/g, function(match) {
+        const escapeMap = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#x27;' };
+        return escapeMap[match];
+      });
+    }
+
+    function closeSuccess() {
+      document.getElementById('successCard').style.display = 'none';
+      document.getElementById('regForm').reset();
+      document.getElementById('coursePrice').value = "";
+    }
+  </script>
+</body>
+</html>
