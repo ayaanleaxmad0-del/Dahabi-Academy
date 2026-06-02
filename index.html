@@ -226,32 +226,59 @@
       font-weight: 500;
     }
 
-   .phone-flex {
-  display: flex;
-  gap: 10px;
-}
-
-.phone-flex select {
-  width: 45%;
-  cursor: pointer;
-}
-
-.phone-flex input {
-  width: 55%;
+    .phone-flex {
+      display: flex;
+      gap: 10px;
     }
-        /* DYNAMIC PRICE BOX */
-    input.price-box {
-      background-color: #edf2f7;
-      border-color: #cbd5e0;
+
+    .phone-flex select {
+      width: 45%;
+      cursor: pointer;
+    }
+
+    .phone-flex input {
+      width: 55%;
+    }
+
+    .price-display-container {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      background-color: #f8fafc;
+      border: 2px solid var(--border-color);
+      border-radius: 8px;
+      padding: 12px 16px;
+      min-height: 50px;
+    }
+
+    .original-price {
+      text-decoration: line-through;
+      color: #a0aec0;
+      font-weight: 600;
+      font-size: 15px;
+    }
+
+    .discounted-price {
       color: var(--primary-orange);
+      font-weight: 800;
+      font-size: 18px;
+    }
+
+    .discount-tag {
+      background-color: #fff5f5;
+      color: var(--error-color);
+      font-size: 11px;
       font-weight: 700;
-      cursor: not-allowed;
+      padding: 2px 8px;
+      border-radius: 20px;
+      border: 1px solid #fed7d7;
+      text-transform: uppercase;
     }
     
     .price-changed { animation: pricePop 0.4s ease-in-out; }
     @keyframes pricePop {
       0% { transform: scale(1); }
-      50% { transform: scale(1.02); box-shadow: 0 0 8px rgba(240, 101, 34, 0.2); }
+      50% { transform: scale(1.02); box-shadow: 0 0 8px rgba(240, 101, 34, 0.15); }
       100% { transform: scale(1); }
     }
 
@@ -357,15 +384,205 @@
       padding: 10px 24px; font-size: 14px; font-weight: 600; border-radius: 6px; cursor: pointer; transition: all 0.25s ease;
     }
     .back-btn:hover { background: rgba(255, 255, 255, 0.15); border-color: #ffffff; }
-    @keyframes fadeIn { from { opacity: 0; transform: scale(0.97); } to { opacity: 1; transform: scale(1); } }
+
+    /* FLOATING WHATSAPP BUTTON (Loo raray bidix si boos loogu baneeyo AI) */
+    .whatsapp-float {
+      position: fixed;
+      width: 56px;
+      height: 56px;
+      bottom: 24px;
+      left: 24px;
+      background-color: #25D366;
+      color: #FFF;
+      border-radius: 50%;
+      text-align: center;
+      font-size: 30px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      z-index: 100;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+    .whatsapp-float:hover { background-color: #128C7E; transform: scale(1.1); }
+
+    /* ==================== AI CHAT AGENT WIDGET STYLE ==================== */
+    .ai-chat-widget {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1000;
+      font-family: inherit;
+    }
+
+    .ai-toggle-btn {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background-color: var(--primary-blue);
+      color: white;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(0, 163, 224, 0.4);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: all 0.3s ease;
+      animation: pulseAI 2s infinite;
+    }
+
+    .ai-toggle-btn:hover { transform: scale(1.05); background-color: #008ec4; }
+
+    @keyframes pulseAI {
+      0% { box-shadow: 0 0 0 0 rgba(0, 163, 224, 0.5); }
+      70% { box-shadow: 0 0 0 15px rgba(0, 163, 224, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(0, 163, 224, 0); }
+    }
+
+    .chat-box {
+      display: none;
+      width: 330px;
+      height: 430px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+      position: absolute;
+      bottom: 70px;
+      right: 0;
+      flex-direction: column;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+      animation: fadeIn 0.3s ease;
+    }
+
+    .chat-header {
+      background: var(--primary-blue);
+      color: white;
+      padding: 12px 15px;
+      font-weight: bold;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14px;
+    }
+
+    .chat-header span { display: flex; align-items: center; gap: 8px; }
+    .chat-header .close-chat { cursor: pointer; font-size: 18px; opacity: 0.8; }
+    .chat-header .close-chat:hover { opacity: 1; }
+
+    .chat-messages {
+      flex: 1;
+      padding: 15px;
+      overflow-y: auto;
+      background: #f7f9fc;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .msg {
+      max-width: 80%;
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .msg.bot {
+      background: #e2e8f0;
+      color: var(--text-dark);
+      align-self: flex-start;
+      border-top-left-radius: 2px;
+    }
+
+    .msg.user {
+      background: var(--primary-orange);
+      color: white;
+      align-self: flex-end;
+      border-top-right-radius: 2px;
+    }
+
+    .chat-input-area {
+      display: flex;
+      padding: 10px;
+      background: white;
+      border-top: 1px solid var(--border-color);
+      gap: 8px;
+    }
+
+    .chat-input-area input {
+      flex: 1;
+      padding: 8px 12px;
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      font-size: 13px;
+      outline: none;
+    }
+
+    .chat-input-area button {
+      background: var(--primary-blue);
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: bold;
+    }
+    .chat-input-area button:hover { background: #008ec4; }
+
+    .typing-indicator {
+      align-self: flex-start;
+      background: #e2e8f0;
+      padding: 8px 12px;
+      border-radius: 8px;
+      display: none;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
   </style>
 </head>
 <body>
 
+  <!-- Floating WhatsApp Button (Loo badalay bidixda si nabad ah) -->
+  <a href="https://wa.me/251908864749?text=Asc%20Dahabi%20Academy%2C%20waxaan%20rabbaa%20inaan%20isdiwaangaliyo." 
+     class="whatsapp-float" target="_blank" rel="noopener noreferrer" title="WhatsApp">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="fill: currentColor; stroke: none;">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.746.953 3.71 1.456 5.705 1.457h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+    </svg>
+  </a>
+
+  <!-- AI CHAT AGENT WIDGET (Dhanka Midig ee hoose) -->
+  <div class="ai-chat-widget">
+    <button class="ai-toggle-btn" onclick="toggleChat()" title="Weydiiso caawimaad AI-ga">
+      <!-- AI Robot Icon SVG -->
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 8V4H8"></path><rect x="4" y="8" width="16" height="12" rx="2"></rect><path d="M2 14h2"></path><path d="M20 14h2"></path><path d="M15 13v2"></path><path d="M9 13v2"></path>
+      </svg>
+    </button>
+    <div class="chat-box" id="chatBox">
+      <div class="chat-header">
+        <span>🤖 Dahabi AI Agent</span>
+        <span class="close-chat" onclick="toggleChat()">×</span>
+      </div>
+      <div class="chat-messages" id="chatMessages">
+        <div class="msg bot">Asc! Waxaan ahay AI kalkaaliyaha Dahabi Academy. Maxaan kaaga caawiyaa foomka isdiwaangalinta ama koorsooyinka?</div>
+      </div>
+      <div class="typing-indicator" id="typingIndicator">Dahabi AI ayaa qoraysa...</div>
+      <div class="chat-input-area">
+        <input type="text" id="chatInput" placeholder="Halkan ku qor su'aashaada..." onkeypress="handleChatKey(event)">
+        <button onclick="sendChatMessage()">Dir</button>
+      </div>
+    </div>
+  </div>
+
   <main class="form-container">
     <div class="success-popup" id="successCard" role="dialog" aria-modal="true" aria-labelledby="successTitle">
       <div style="font-size: 60px; margin-bottom: 15px;">👍🏽🎉</div>
-      <h2 id="successTitle">Isdiwaangalintada Waa Ku Guuleysatey!</h2>
+      <h2 id="successTitle">Isdiwaangalintu Waa Guul!</h2>
       <p>Ku soo dhawaada Dahabi Academy. Xogtaada isdiwaangalinta si guul leh ayaa loo helay. Dhawaan ayaan kula soo xiriiri doonaa.</p>
       <button class="back-btn" type="button" onclick="closeSuccess()">Dib Ulaabo</button>
     </div>
@@ -379,30 +596,31 @@
         </div>
       </div>
       <h1><span class="dahabi">DAHABI</span> <span class="academy">ACADEMY</span></h1>
-      <p>Foomka Isdiwaangalinta Rasmiga Ah <b>( Ardeyda )</b></p>
+      <p>Foomka Isdiwaangalinta Rasmiga Ah ee <b>( Ardeyda)</b></p>
     </header>
 
     <form id="regForm" onsubmit="validateAndSubmitForm(event)" novalidate>
       
+      <!-- QAYBTA 1AAD: XOGTA SHAQSIGA -->
       <section>
         <fieldset>
-          <legend>Qaybta 1<sup>aad</sup> Xogta Shaqsiga</legend>
+          <legend>Qaybta 1<sup>had</sup> Xogta Shaqsiga</legend>
           
           <div class="input-group">
             <label for="firstName">First Name *</label>
-            <input type="text" id="firstName" name="firstName" placeholder="Gali magacaaga koowaad" maxlength="30" aria-required="true" required>
+            <input type="text" id="firstName" name="firstName" placeholder="Gali magacaaga koowaad" maxlength="30" required>
             <div class="error-msg" id="error-firstName" role="alert">Fadlan qor magacaaga koowaad</div>
           </div>
           
           <div class="input-group">
             <label for="middleName">Middle Name *</label>
-            <input type="text" id="middleName" name="middleName" placeholder="Gali magaca aabaha" maxlength="30" aria-required="true" required>
+            <input type="text" id="middleName" name="middleName" placeholder="Gali magaca aabaha" maxlength="30" required>
             <div class="error-msg" id="error-middleName" role="alert">Fadlan qor magaca aabaha</div>
           </div>
           
           <div class="input-group">
             <label for="lastName">Last Name *</label>
-            <input type="text" id="lastName" name="lastName" placeholder="Gali awowgaa" maxlength="30" aria-required="true" required>
+            <input type="text" id="lastName" name="lastName" placeholder="Gali awowgaa" maxlength="30" required>
             <div class="error-msg" id="error-lastName" role="alert">Fadlan qor magaca awowga</div>
           </div>
           
@@ -410,11 +628,11 @@
             <span id="genderLabel" style="font-size: var(--font-label); font-weight: 600; color: #4a5568; display: block; margin-bottom: 6px;">Gender *</span>
             <div class="gender-container" role="radiogroup" aria-labelledby="genderLabel">
               <div class="gender-option">
-                <input type="radio" id="male" name="gender" value="Male" aria-required="true" required>
+                <input type="radio" id="male" name="gender" value="Male" required>
                 <label for="male">Male</label>
               </div>
               <div class="gender-option">
-                <input type="radio" id="female" name="gender" value="Female" aria-required="true" required>
+                <input type="radio" id="female" name="gender" value="Female" required>
                 <label for="female">Female</label>
               </div>
             </div>
@@ -423,37 +641,36 @@
           
           <div class="input-group">
             <label for="email">Email Address *</label>
-            <input type="email" id="email" name="email" placeholder="tusaale@gmail.com" aria-required="true" required>
+            <input type="email" id="email" name="email" placeholder="tusaale@gmail.com" required>
             <div class="error-msg" id="error-email" role="alert">Fadlan qor foomka email-ka oo sax ah</div>
           </div>
           
           <div class="input-group">
             <label for="phone">Phone Number *</label>
             <div class="phone-flex">
-              <select id="countryCode" name="countryCode" aria-label="Country Dial Code" aria-required="true" required>
+              <select id="countryCode" name="countryCode" required>
                 <option value="+252">🇸🇴 SO (+252)</option>
                 <option value="+251">🇪🇹 ET (+251)</option>
                 <option value="+254">🇰🇪 KE (+254)</option>
                 <option value="+966">🇸🇦 SA (+966)</option>
                 <option value="+971">🇦🇪 AE (+971)</option>
                 <option value="+1">🇺🇸 US (+1)</option>
-                <option value="+44">🇬🇧 UK (+44)</option>
-                <option value="+46">🇸🇪 SE (+46)</option>
               </select>
-              <input type="text" id="phone" name="phone" placeholder="61xxxxxxx" pattern="[0-9]{6,9}" maxlength="9" aria-label="Phone Number without country code" aria-required="true" required>
+              <input type="text" id="phone" name="phone" placeholder="61xxxxxxx" pattern="[0-9]{6,9}" maxlength="9" required>
             </div>
             <div class="error-msg" id="error-phone" role="alert">Fadlan qor nambarkaaga tel-ka oo sax ah (Kaliya 6 ilaa 9 nambar)</div>
           </div>
         </fieldset>
       </section>
       
+      <!-- QAYBTA 2AAD: DOORASHADA KOORSADA -->
       <section>
         <fieldset>
-          <legend>Qaybta 2<sup>aad</sup> Doorashada Koorsada</legend>
+          <legend>Qaybta 2<sup>had</sup> Doorashada Koorsada</legend>
           
           <div class="input-group">
             <label for="course">Select Course *</label>
-            <select id="course" name="course" onchange="updateCoursePrice()" aria-required="true" required>
+            <select id="course" name="course" onchange="updateCoursePrice()" required>
               <option value="">-- Dooro Xirfadda Aad Rabto --</option>
               <option value="photoshop">Adobe Photoshop</option>
               <option value="illustrator">Adobe Illustrator</option>
@@ -461,38 +678,54 @@
               <option value="premier">Adobe Premier Pro</option>
               <option value="aftereffects">After Effects</option>
               <option value="motion">Motion Graphic</option>
-              <option value="vn">VN Video Editor</option>
-              <option value="capcut">Cap Cut</option>
               <option value="webdesign">Web Design</option>
               <option value="programming">Programming</option>
-              <option value="ai">Learn AI</option>
+              <option value="ai">Learn AI (Baro AI)</option>
               <option value="english">Speaking English</option>
-              <option value="public">Public Speaking</option>
-              <option value="cyber">Cyber Security</option>
-              <option value="quran">Learning Qur'an</option>
-              <option value="social">Social Media Management</option>
             </select>
             <div class="error-msg" id="error-course" role="alert">Fadlan dooro mid ka mid ah koorsooyinka</div>
           </div>
 
           <div class="input-group">
-            <label for="coursePrice">Course Price (Qiimaha Koorsada)</label>
-            <input type="text" id="coursePrice" name="coursePrice" class="price-box" placeholder="Dooro koorsada si aad u aragto qiimaha" readonly>
+            <label>Course Price (Qiimaha Koorsada)</label>
+            <input type="hidden" id="coursePrice" name="coursePrice">
+            <div class="price-display-container" id="priceDisplayBox">
+              <span style="color: #718096; font-size: 13px;">Dooro koorsada si aad u aragto qiimaha</span>
+            </div>
           </div>
         </fieldset>
       </section>
 
+      <!-- QAYBTA LACAG BIXINTA -->
       <section>
         <fieldset>
-          <legend>Qaybta 3<sup>aad</sup> Macluumaad Dheeraad ah</legend>
-          
+          <legend>Qaybta Lacag Bixinta (Payment Details)</legend>
+          <div style="background-color: #f8fafc; border-left: 4px solid var(--primary-blue); padding: 15px; border-radius: 4px; margin-bottom: 15px;">
+            <p><strong>🇸🇴 Gudaha Soomaaliya:</strong></p>
+            <p style="font-size: 13px; color: var(--text-dark); margin-left: 10px;">
+              Ku soo dir <b>E-Birr</b> adigoo isticmaalaya <b>Waafi App</b><br>
+              📞 Nambarka: <b>+251908864749</b> (Ayanle Ahmed Mohamed)
+            </p>
+            <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 10px 0;">
+            <p><strong>🌐 Dibada (US, UK, Europe, etc.):</strong></p>
+            <p style="font-size: 13px; color: var(--text-dark); margin-left: 10px;">
+              Ku soo dir <b>Commercial Bank of Ethiopia (CBE)</b><br>
+              Account Number: <b>1000743300002</b> (Ayanle Ahmed Mohamed)
+            </p>
+          </div>
+        </fieldset>
+      </section>
+
+      <!-- QAYBTA 3AAD: MACLUUMAAD DHEERAAD AH -->
+      <section>
+        <fieldset>
+          <legend>Qaybta 3<sup>had</sup> Macluumaad Dheeraad ah</legend>
           <div class="input-group">
             <label for="message">Haddii Aad Qabto Su'aal Halkan Ku Qor (Optional)</label>
             <textarea id="message" name="message" rows="4" placeholder="Halkan ku qor fariintaada hadday jirto..." maxlength="500"></textarea>
           </div>
-
           <div class="whatsapp-notice">
-            📢 <b>Ogeysiis:</b> Fadlan marka aad foomka dirto, rasiidka lacag-bixinta si toos ah noogu soo dir WhatsApp-ka si loo hubaayo rasiidkaaga.
+            📢 <b>Ogeysiis:</b> Fadlan marka aad foomka dirto, rasiidka lacag-bixinta si toos ah noogu soo dir WhatsApp-ka.
           </div>
         </fieldset>
       </section>
@@ -504,11 +737,11 @@
     </form>
   </main>
 
+  <!-- FIREBASE INTEGRATION -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
     import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
-    // Firebase Configuration
     const firebaseConfig = {
       apiKey: "AIzaSyDrQ-tycjjDU4gek1jz07IIg30VFio-1so",
       authDomain: "dahabi-academy.firebaseapp.com",
@@ -518,81 +751,31 @@
       appId: "1:754314547074:web:cac5ac7ae057af9c0a499b"
     };
 
-    // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
     window.validateAndSubmitForm = async function(event) {
       event.preventDefault();
-      
       const form = document.getElementById('regForm');
       let isValid = true;
-      let firstErrorElement = null;
       
       const fields = ['firstName', 'middleName', 'lastName', 'email', 'phone', 'course'];
-      
-      // Clean up previous error visuals
       fields.forEach(field => {
         document.getElementById(field).parentElement.classList.remove('input-error');
         document.getElementById('error-' + field).style.display = 'none';
       });
-      document.getElementById('error-gender').style.display = 'none';
 
-      // Validate inputs
       fields.forEach(field => {
         const input = document.getElementById(field);
-        const cleanVal = sanitizeValue(input.value);
-        input.value = cleanVal;
-
-        if (!cleanVal) {
+        if (!input.value.trim()) {
           input.parentElement.classList.add('input-error');
-          const errBox = document.getElementById('error-' + field);
-          errBox.style.display = 'block';
+          document.getElementById('error-' + field).style.display = 'block';
           isValid = false;
-          if (!firstErrorElement) firstErrorElement = input;
         }
       });
 
-      // Email Format Check
-      const emailInput = document.getElementById('email');
-      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (emailInput.value && !emailPattern.test(emailInput.value)) {
-        emailInput.parentElement.classList.add('input-error');
-        const errBox = document.getElementById('error-email');
-        errBox.innerText = "Fadlan gali foomka email-ka oo sax ah";
-        errBox.style.display = 'block';
-        isValid = false;
-        if (!firstErrorElement) firstErrorElement = emailInput;
-      }
+      if (!isValid) return;
 
-      // Phone Format Check
-      const phoneInput = document.getElementById('phone');
-      const phonePattern = /^[0-9]{6,9}$/;
-      if (phoneInput.value && !phonePattern.test(phoneInput.value)) {
-        phoneInput.parentElement.parentElement.classList.add('input-error');
-        document.getElementById('error-phone').style.display = 'block';
-        isValid = false;
-        if (!firstErrorElement) firstErrorElement = phoneInput;
-      }
-
-      // Gender Validation
-      const maleChecked = document.getElementById('male').checked;
-      const femaleChecked = document.getElementById('female').checked;
-      if (!maleChecked && !femaleChecked) {
-        document.getElementById('error-gender').style.display = 'block';
-        isValid = false;
-        if (!firstErrorElement) firstErrorElement = document.getElementById('male');
-      }
-
-      if (!isValid) {
-        if (firstErrorElement) {
-          firstErrorElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          firstErrorElement.focus();
-        }
-        return;
-      }
-
-      // Loading state
       const submitBtn = document.getElementById('submitBtn');
       const btnSpinner = document.getElementById('btnSpinner');
       const btnText = document.getElementById('btnText');
@@ -603,88 +786,131 @@
       btnText.innerText = "Gudbinaya xogta...";
 
       try {
-        // Construct Payload for Firestore Directly
-        const submissionPayload = {
-          firstName: sanitizeValue(document.getElementById('firstName').value),
-          middleName: sanitizeValue(document.getElementById('middleName').value),
-          lastName: sanitizeValue(document.getElementById('lastName').value),
+        await addDoc(collection(db, "registrations"), {
+          firstName: document.getElementById('firstName').value,
+          middleName: document.getElementById('middleName').value,
+          lastName: document.getElementById('lastName').value,
           gender: document.getElementById('male').checked ? "Male" : "Female",
-          email: sanitizeValue(document.getElementById('email').value),
-          phone: sanitizeValue(document.getElementById('phone').value),
+          email: document.getElementById('email').value,
+          phone: document.getElementById('phone').value,
           countryCode: document.getElementById('countryCode').value,
           course: document.getElementById('course').value,
           coursePrice: document.getElementById('coursePrice').value,
-          message: sanitizeValue(document.getElementById('message').value),
+          message: document.getElementById('message').value,
           createdAt: new Date().toISOString()
-        };
+        });
 
-        // Add document to Firestore 'registrations' collection
-        await addDoc(collection(db, "registrations"), submissionPayload);
-
-        // Reset state mechanics
         form.classList.remove('form-locked');
         submitBtn.disabled = false;
         btnSpinner.style.display = "none";
         btnText.innerText = "ISDIWAANGALI HADA";
-
-        // Show Success Popup
-        const successCard = document.getElementById('successCard');
-        successCard.style.display = 'flex';
-        successCard.focus();
-
-      } catch (error) {
-        console.error("Firebase Storage Bypass Error: ", error);
-        alert("Waan ka xunnahay, qalad ayaa dhacay intii xogta la dirayay. Fadlan dib u tijaabi.");
+        document.getElementById('successCard').style.display = 'flex';
+      } catch (e) {
+        console.error(e);
+        alert("Cillad ayaa dhacday, dib u tijaabi.");
         form.classList.remove('form-locked');
         submitBtn.disabled = false;
         btnSpinner.style.display = "none";
-        btnText.innerText = "ISDIWAANGALI HADA";
       }
     };
   </script>
 
+  <!-- DYNAMIC PRICE & AI AGENT ENGINE -->
   <script>
-    const coursePrices = {
-      "photoshop": "$25.00 USD", "illustrator": "$25.00 USD", "indesign": "$20.00 USD",
-      "premier": "$30.00 USD", "aftereffects": "$35.00 USD", "motion": "$40.00 USD",
-      "vn": "$15.00 USD", "capcut": "$15.00 USD", "webdesign": "$45.00 USD",
-      "programming": "$60.00 USD", "ai": "$50.00 USD", "english": "$20.00 USD",
-      "public": "$25.00 USD", "cyber": "$55.00 USD", "quran": "$15.00 USD", "social": "$30.00 USD"
+    const coursePriceDetails = {
+      "photoshop": { current: "$25.00 USD", original: "$40.00 USD" },
+      "illustrator": { current: "$25.00 USD", original: "$40.00 USD" },
+      "indesign": { current: "$20.00 USD", original: "$35.00 USD" },
+      "premier": { current: "$30.00 USD", original: "$45.00 USD" },
+      "aftereffects": { current: "$35.00 USD", original: "$50.00 USD" },
+      "motion": { current: "$40.00 USD", original: "$60.00 USD" },
+      "webdesign": { current: "$45.00 USD", original: "$65.00 USD" },
+      "programming": { current: "$60.00 USD", original: "$85.00 USD" },
+      "ai": { current: "$50.00 USD", original: "$75.00 USD" },
+      "english": { current: "$20.00 USD", original: "$35.00 USD" }
     };
 
     function updateCoursePrice() {
       const courseSelect = document.getElementById('course');
-      const priceInput = document.getElementById('coursePrice');
+      const hiddenPriceInput = document.getElementById('coursePrice');
+      const displayBox = document.getElementById('priceDisplayBox');
       const selectedCourse = courseSelect.value;
 
-      if (selectedCourse && coursePrices[selectedCourse]) {
-        priceInput.value = coursePrices[selectedCourse];
-        priceInput.classList.remove('price-changed');
-        void priceInput.offsetWidth; 
-        priceInput.classList.add('price-changed');
+      if (selectedCourse && coursePriceDetails[selectedCourse]) {
+        const priceObj = coursePriceDetails[selectedCourse];
+        hiddenPriceInput.value = `Price: ${priceObj.current} (Was ${priceObj.original})`;
+        displayBox.innerHTML = `<span class="original-price">${priceObj.original}</span><span class="discounted-price">${priceObj.current}</span><span class="discount-tag">OFFER 🔥</span>`;
       } else {
-        priceInput.value = "";
+        hiddenPriceInput.value = "";
+        displayBox.innerHTML = `<span style="color: #718096; font-size: 13px;">Dooro koorsada si aad u aragto qiimaha</span>`;
       }
     }
 
-    function sanitizeValue(val) {
-      if (!val) return "";
-      let clean = val.trim().replace(/\s+/g, ' ');
-      return escapeHTML(clean);
+    // ==================== AI CHAT FUNCTIONS ====================
+    function toggleChat() {
+      const chatBox = document.getElementById('chatBox');
+      chatBox.style.display = (chatBox.style.display === 'flex') ? 'none' : 'flex';
     }
 
-    function escapeHTML(str) {
-      return str.replace(/[&<>"']/g, function(match) {
-        const escapeMap = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#x27;' };
-        return escapeMap[match];
-      });
+    function handleChatKey(event) {
+      if (event.key === 'Enter') sendChatMessage();
+    }
+
+    function sendChatMessage() {
+      const input = document.getElementById('chatInput');
+      const text = input.value.trim();
+      if (!text) return;
+
+      appendMessage(text, 'user');
+      input.value = '';
+
+      const indicator = document.getElementById('typingIndicator');
+      indicator.style.display = 'block';
+
+      setTimeout(() => {
+        indicator.style.display = 'none';
+        const reply = getBotResponse(text);
+        appendMessage(reply, 'bot');
+      }, 1000);
+    }
+
+    function appendMessage(text, sender) {
+      const chatMessages = document.getElementById('chatMessages');
+      const msgDiv = document.createElement('div');
+      msgDiv.className = `msg ${sender}`;
+      msgDiv.innerText = text;
+      chatMessages.appendChild(msgDiv);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    // AI Response Matrix (Wuxuu aqrinayaa ereyada muhiimka ah)
+    function getBotResponse(input) {
+      const text = input.toLowerCase();
+      
+      if (text.includes('qiim') || text.includes('lacag') || text.includes('bixin') || text.includes('dollar')) {
+        return "Qiimaha koorsooyinka aad ayuu u jaban yahay! Inta badan waa inta u dhaxaysa $15 ilaa $40 hadda oo uu dhimis jiro. Waxaad ku bixin kartaa E-Birr (Waafi) nambarka +251908864749 ama CBE Bank.";
+      }
+      if (text.includes('koorso') || text.includes('barad') || text.includes('baran')) {
+        return "Waxaan bixinaa koorsooyin casri ah sida Graphic Design (Photoshop, Illustrator, Motion), Web Design, Programming, AI, iyo Speaking English. Dooro mid ka mid ah liiska foomka kore!";
+      }
+      if (text.includes('saac') || text.includes('goorm') || text.includes('bilaab')) {
+        return "Koorsooyinka waxay u baxaan si Online ah maalin kasta. Saacadaha waxaa lagu waafajiyaa marka ay ardayda u firaaqo tahay rasmiga ah.";
+      }
+      if (text.includes('shahaad') || text.includes('shhad')) {
+        return "Haa, arday kasta oo dhammaysta koorsada wuxuu helayaa Shahaado rasmi ah oo Dahabi Academy ah oo xirfadiisa caddaynaysa.";
+      }
+      if (text.includes('asc') || text.includes('hello') || text.includes('hi')) {
+        return "Kalaay diisan! Soo dhawaaw, maxaan kaaga caawiyaa maanta oo ku saabsan Dahabi Academy?";
+      }
+      
+      return "Su'aal fiican! Si aad faahfaahin buuxda uga hesho arrintaas, fadlan guji calaamadda cagaaran ee WhatsApp-ka bidixda hoose ku taal si aad toos ula hadasho maamulka foomka.";
     }
 
     function closeSuccess() {
       document.getElementById('successCard').style.display = 'none';
       document.getElementById('regForm').reset();
-      document.getElementById('coursePrice').value = "";
+      document.getElementById('priceDisplayBox').innerHTML = `<span style="color: #718096; font-size: 13px;">Dooro koorsada si aad u aragto qiimaha</span>`;
     }
   </script>
 </body>
-</html>
+</htm>
