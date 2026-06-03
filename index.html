@@ -543,11 +543,43 @@
     }
 
     @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        /* FLOATING WHATSAPP BUTTON */
+    .whatsapp-float {
+      position: fixed;
+      width: 56px;
+      height: 56px;
+      bottom: 24px;
+      left: 24px;
+      background-color: #25D366;
+      color: #FFF;
+      border-radius: 50%;
+      text-align: center;
+      font-size: 30px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      z-index: 100;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      animation: pulseWhatsApp 2s infinite;
+    }
+
+    .whatsapp-float:hover {
+      background-color: #128C7E;
+      transform: scale(1.1);
+    }
+
+    @keyframes pulseWhatsApp {
+      0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.5); }
+      70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+    }
+
   </style>
 </head>
 <body>
 
-  <!-- Floating WhatsApp Button (Loo badalay bidixda si nabad ah) -->
   <a href="https://wa.me/251908864749?text=Asc%20Dahabi%20Academy%2C%20waxaan%20rabbaa%20inaan%20isdiwaangaliyo." 
      class="whatsapp-float" target="_blank" rel="noopener noreferrer" title="WhatsApp">
     <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="fill: currentColor; stroke: none;">
@@ -555,10 +587,8 @@
     </svg>
   </a>
 
-  <!-- AI CHAT AGENT WIDGET (Dhanka Midig ee hoose) -->
   <div class="ai-chat-widget">
     <button class="ai-toggle-btn" onclick="toggleChat()" title="Weydiiso caawimaad AI-ga">
-      <!-- AI Robot Icon SVG -->
       <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M12 8V4H8"></path><rect x="4" y="8" width="16" height="12" rx="2"></rect><path d="M2 14h2"></path><path d="M20 14h2"></path><path d="M15 13v2"></path><path d="M9 13v2"></path>
       </svg>
@@ -569,7 +599,7 @@
         <span class="close-chat" onclick="toggleChat()">×</span>
       </div>
       <div class="chat-messages" id="chatMessages">
-        <div class="msg bot">Asc! Waxaan ahay AI kalkaaliyaha Dahabi Academy. Maxaan kaaga caawiyaa foomka isdiwaangalinta ama koorsooyinka?</div>
+        <div class="msg bot">Asc! Waxaan ahay AI kalkaaliyaha Dahabi Academy. Maxaan kaa caawiyaa foomka isdiwaangalinta ama koorsooyinka?</div>
       </div>
       <div class="typing-indicator" id="typingIndicator">Dahabi AI ayaa qoraysa...</div>
       <div class="chat-input-area">
@@ -601,31 +631,30 @@
 
     <form id="regForm" onsubmit="validateAndSubmitForm(event)" novalidate>
       
-      <!-- QAYBTA 1AAD: XOGTA SHAQSIGA -->
       <section>
         <fieldset>
-          <legend>Qaybta 1<sup>had</sup> Xogta Shaqsiga</legend>
+          <legend>Qaybta 1<sup>aad</sup> Xogta Shaqsiga</legend>
           
           <div class="input-group">
-            <label for="firstName">First Name *</label>
+            <label for="firstName">First Name </label>
             <input type="text" id="firstName" name="firstName" placeholder="Gali magacaaga koowaad" maxlength="30" required>
             <div class="error-msg" id="error-firstName" role="alert">Fadlan qor magacaaga koowaad</div>
           </div>
           
           <div class="input-group">
-            <label for="middleName">Middle Name *</label>
+            <label for="middleName">Middle Name </label>
             <input type="text" id="middleName" name="middleName" placeholder="Gali magaca aabaha" maxlength="30" required>
             <div class="error-msg" id="error-middleName" role="alert">Fadlan qor magaca aabaha</div>
           </div>
           
           <div class="input-group">
-            <label for="lastName">Last Name *</label>
+            <label for="lastName">Last Name </label>
             <input type="text" id="lastName" name="lastName" placeholder="Gali awowgaa" maxlength="30" required>
             <div class="error-msg" id="error-lastName" role="alert">Fadlan qor magaca awowga</div>
           </div>
           
           <div class="input-group">
-            <span id="genderLabel" style="font-size: var(--font-label); font-weight: 600; color: #4a5568; display: block; margin-bottom: 6px;">Gender *</span>
+            <span id="genderLabel" style="font-size: var(--font-label); font-weight: 600; color: #4a5568; display: block; margin-bottom: 6px;">Gender </span>
             <div class="gender-container" role="radiogroup" aria-labelledby="genderLabel">
               <div class="gender-option">
                 <input type="radio" id="male" name="gender" value="Male" required>
@@ -640,13 +669,13 @@
           </div>
           
           <div class="input-group">
-            <label for="email">Email Address *</label>
+            <label for="email">Email Address </label>
             <input type="email" id="email" name="email" placeholder="tusaale@gmail.com" required>
             <div class="error-msg" id="error-email" role="alert">Fadlan qor foomka email-ka oo sax ah</div>
           </div>
           
           <div class="input-group">
-            <label for="phone">Phone Number *</label>
+            <label for="phone">Phone Number </label>
             <div class="phone-flex">
               <select id="countryCode" name="countryCode" required>
                 <option value="+252">🇸🇴 SO (+252)</option>
@@ -663,13 +692,12 @@
         </fieldset>
       </section>
       
-      <!-- QAYBTA 2AAD: DOORASHADA KOORSADA -->
       <section>
         <fieldset>
-          <legend>Qaybta 2<sup>had</sup> Doorashada Koorsada</legend>
+          <legend>Qaybta 2<sup>aad</sup> Doorashada Koorsada</legend>
           
           <div class="input-group">
-            <label for="course">Select Course *</label>
+            <label for="course">Select Course </label>
             <select id="course" name="course" onchange="updateCoursePrice()" required>
               <option value="">-- Dooro Xirfadda Aad Rabto --</option>
               <option value="photoshop">Adobe Photoshop</option>
@@ -696,7 +724,6 @@
         </fieldset>
       </section>
 
-      <!-- QAYBTA LACAG BIXINTA -->
       <section>
         <fieldset>
           <legend>Qaybta Lacag Bixinta (Payment Details)</legend>
@@ -716,10 +743,9 @@
         </fieldset>
       </section>
 
-      <!-- QAYBTA 3AAD: MACLUUMAAD DHEERAAD AH -->
       <section>
         <fieldset>
-          <legend>Qaybta 3<sup>had</sup> Macluumaad Dheeraad ah</legend>
+          <legend>Qaybta 3<sup>aad</sup> Macluumaad Dheeraad ah</legend>
           <div class="input-group">
             <label for="message">Haddii Aad Qabto Su'aal Halkan Ku Qor (Optional)</label>
             <textarea id="message" name="message" rows="4" placeholder="Halkan ku qor fariintaada hadday jirto..." maxlength="500"></textarea>
@@ -737,10 +763,10 @@
     </form>
   </main>
 
-  <!-- FIREBASE INTEGRATION -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
-    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+    // Waxaa halkan laga soo kordhiyey "doc" iyo "setDoc" bedelkii "addDoc"
+    import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyDrQ-tycjjDU4gek1jz07IIg30VFio-1so",
@@ -762,17 +788,30 @@
       const fields = ['firstName', 'middleName', 'lastName', 'email', 'phone', 'course'];
       fields.forEach(field => {
         document.getElementById(field).parentElement.classList.remove('input-error');
-        document.getElementById('error-' + field).style.display = 'none';
+        if (document.getElementById('error-' + field)) {
+          document.getElementById('error-' + field).style.display = 'none';
+        }
       });
+      document.getElementById('error-gender').style.display = 'none';
 
       fields.forEach(field => {
         const input = document.getElementById(field);
         if (!input.value.trim()) {
           input.parentElement.classList.add('input-error');
-          document.getElementById('error-' + field).style.display = 'block';
+          if (document.getElementById('error-' + field)) {
+            document.getElementById('error-' + field).style.display = 'block';
+          }
           isValid = false;
         }
       });
+
+      // Gender Validation
+      const maleChecked = document.getElementById('male').checked;
+      const femaleChecked = document.getElementById('female').checked;
+      if (!maleChecked && !femaleChecked) {
+        document.getElementById('error-gender').style.display = 'block';
+        isValid = false;
+      }
 
       if (!isValid) return;
 
@@ -785,20 +824,27 @@
       btnSpinner.style.display = "block";
       btnText.innerText = "Gudbinaya xogta...";
 
+      // Standardize the student email to avoid spaces and ensure proper document naming
+      const rawEmail = document.getElementById('email').value.trim().toLowerCase();
+
       try {
-        await addDoc(collection(db, "registrations"), {
-          firstName: document.getElementById('firstName').value,
-          middleName: document.getElementById('middleName').value,
-          lastName: document.getElementById('lastName').value,
-          gender: document.getElementById('male').checked ? "Male" : "Female",
-          email: document.getElementById('email').value,
-          phone: document.getElementById('phone').value,
+        // Prepare data payload structure
+        const registrationData = {
+          firstName: document.getElementById('firstName').value.trim(),
+          middleName: document.getElementById('middleName').value.trim(),
+          lastName: document.getElementById('lastName').value.trim(),
+          gender: maleChecked ? "Male" : "Female",
+          email: rawEmail,
+          phone: document.getElementById('phone').value.trim(),
           countryCode: document.getElementById('countryCode').value,
           course: document.getElementById('course').value,
           coursePrice: document.getElementById('coursePrice').value,
-          message: document.getElementById('message').value,
+          message: document.getElementById('message').value.trim(),
           createdAt: new Date().toISOString()
-        });
+        };
+
+        // Custom ID Upgrade: setDoc() uses rawEmail as the Document ID instead of generating random hashes
+        await setDoc(doc(db, "registrations", rawEmail), registrationData);
 
         form.classList.remove('form-locked');
         submitBtn.disabled = false;
@@ -806,16 +852,16 @@
         btnText.innerText = "ISDIWAANGALI HADA";
         document.getElementById('successCard').style.display = 'flex';
       } catch (e) {
-        console.error(e);
-        alert("Cillad ayaa dhacday, dib u tijaabi.");
+        console.error("Firestore custom document creation failed: ", e);
+        alert("Cillad ayaa dhacday intii xogta la badbaadinayey, fadlan dib u tijaabi.");
         form.classList.remove('form-locked');
         submitBtn.disabled = false;
         btnSpinner.style.display = "none";
+        btnText.innerText = "ISDIWAANGALI HADA";
       }
     };
   </script>
 
-  <!-- DYNAMIC PRICE & AI AGENT ENGINE -->
   <script>
     const coursePriceDetails = {
       "photoshop": { current: "$25.00 USD", original: "$40.00 USD" },
@@ -883,7 +929,7 @@
       chatMessages.scrollTop = chatMessages.scrollHeight;
     }
 
-    // AI Response Matrix (Wuxuu aqrinayaa ereyada muhiimka ah)
+    // AI Response Matrix
     function getBotResponse(input) {
       const text = input.toLowerCase();
       
@@ -913,4 +959,5 @@
     }
   </script>
 </body>
-</htm>
+</html>
+
