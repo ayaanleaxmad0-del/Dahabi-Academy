@@ -155,6 +155,7 @@
 
     input[type="text"],
     input[type="email"],
+    input[type="number"],
     select,
     textarea {
       width: 100%;
@@ -174,20 +175,20 @@
       box-shadow: 0 0 0 4px var(--primary-blue-alpha);
     }
 
-    .gender-container {
+    .radio-container-custom {
       display: flex;
       gap: 24px;
       margin-top: 5px;
       padding: 4px 0;
     }
 
-    .gender-option {
+    .radio-option-custom {
       display: flex;
       align-items: center;
       cursor: pointer;
     }
 
-    .gender-option input[type="radio"] {
+    .radio-option-custom input[type="radio"] {
       appearance: none;
       -webkit-appearance: none;
       width: 22px;
@@ -202,11 +203,11 @@
       place-content: center;
     }
 
-    .gender-option input[type="radio"]:checked {
+    .radio-option-custom input[type="radio"]:checked {
       border-color: var(--primary-orange);
     }
 
-    .gender-option input[type="radio"]::before {
+    .radio-option-custom input[type="radio"]::before {
       content: "";
       width: 10px;
       height: 10px;
@@ -216,11 +217,11 @@
       background-color: var(--primary-orange);
     }
 
-    .gender-option input[type="radio"]:checked::before {
+    .radio-option-custom input[type="radio"]:checked::before {
       transform: scale(1);
     }
 
-    .gender-option label {
+    .radio-option-custom label {
       margin-bottom: 0;
       cursor: pointer;
       font-weight: 500;
@@ -280,6 +281,106 @@
       0% { transform: scale(1); }
       50% { transform: scale(1.02); box-shadow: 0 0 8px rgba(240, 101, 34, 0.15); }
       100% { transform: scale(1); }
+    }
+
+    /* UPLOAD RASIIDKA */
+    .file-drop-area {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 25px 20px;
+      border: 2px dashed #cbd5e0;
+      border-radius: 12px;
+      background-color: #f8fafc;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      text-align: center;
+      margin-top: 5px;
+    }
+
+    .file-drop-area.drag-over {
+      border-color: var(--primary-orange);
+      background-color: rgba(240, 101, 34, 0.04);
+      transform: scale(1.01);
+    }
+
+    .upload-icon {
+      font-size: 38px;
+      margin-bottom: 10px;
+      transition: transform 0.3s ease;
+      display: inline-block;
+    }
+
+    .file-drop-area:hover .upload-icon {
+      transform: translateY(-4px);
+    }
+
+    .file-msg {
+      font-size: 13px;
+      color: var(--text-muted);
+      font-weight: 500;
+      line-height: 1.5;
+    }
+
+    .file-msg b {
+      color: var(--primary-blue);
+    }
+
+    .file-input-hidden {
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 100%;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .preview-container {
+      display: none;
+      margin-top: 15px;
+      position: relative;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 2px solid var(--border-color);
+      max-width: 100%;
+      background: #f1f5f9;
+      padding: 6px;
+    }
+
+    .preview-image {
+      display: block;
+      max-height: 180px;
+      max-width: 100%;
+      margin: 0 auto;
+      border-radius: 6px;
+      object-fit: contain;
+    }
+
+    .remove-preview-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(229, 62, 62, 0.9);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 26px;
+      height: 26px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+      transition: background 0.2s;
+      z-index: 5;
+    }
+    .remove-preview-btn:hover {
+      background: #e53e3e;
     }
 
     .whatsapp-notice {
@@ -350,12 +451,12 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    .input-error input, .input-error select, .input-error textarea {
+    .input-error input, .input-error select, .input-error textarea, .input-error .file-drop-area {
       border-color: var(--error-color) !important;
       background-color: var(--error-bg);
     }
     
-    .form-locked input, .form-locked select, .form-locked textarea {
+    .form-locked input, .form-locked select, .form-locked textarea, .form-locked .file-drop-area {
       pointer-events: none;
       opacity: 0.6;
       background-color: #edf2f7;
@@ -385,7 +486,7 @@
     }
     .back-btn:hover { background: rgba(255, 255, 255, 0.15); border-color: #ffffff; }
 
-    /* FLOATING WHATSAPP BUTTON (Loo raray bidix si boos loogu baneeyo AI) */
+    /* FLOATING WHATSAPP BUTTON */
     .whatsapp-float {
       position: fixed;
       width: 56px;
@@ -404,10 +505,17 @@
       align-items: center;
       text-decoration: none;
       transition: all 0.3s ease;
+      animation: pulseWhatsApp 2s infinite;
     }
     .whatsapp-float:hover { background-color: #128C7E; transform: scale(1.1); }
 
-    /* ==================== AI CHAT AGENT WIDGET STYLE ==================== */
+    @keyframes pulseWhatsApp {
+      0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.5); }
+      70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+    }
+
+    /* AI CHAT AGENT WIDGET STYLE */
     .ai-chat-widget {
       position: fixed;
       bottom: 24px;
@@ -431,7 +539,6 @@
       transition: all 0.3s ease;
       animation: pulseAI 2s infinite;
     }
-
     .ai-toggle-btn:hover { transform: scale(1.05); background-color: #008ec4; }
 
     @keyframes pulseAI {
@@ -442,8 +549,8 @@
 
     .chat-box {
       display: none;
-      width: 330px;
-      height: 430px;
+      width: 350px;
+      height: 480px;
       background: white;
       border-radius: 12px;
       box-shadow: 0 8px 30px rgba(0,0,0,0.15);
@@ -466,7 +573,6 @@
       align-items: center;
       font-size: 14px;
     }
-
     .chat-header span { display: flex; align-items: center; gap: 8px; }
     .chat-header .close-chat { cursor: pointer; font-size: 18px; opacity: 0.8; }
     .chat-header .close-chat:hover { opacity: 1; }
@@ -482,100 +588,24 @@
     }
 
     .msg {
-      max-width: 80%;
+      max-width: 85%;
       padding: 10px 12px;
       border-radius: 8px;
       font-size: 13px;
       line-height: 1.4;
+      white-space: pre-line;
     }
+    .msg.bot { background: #e2e8f0; color: var(--text-dark); align-self: flex-start; border-top-left-radius: 2px; }
+    .msg.user { background: var(--primary-orange); color: white; align-self: flex-end; border-top-right-radius: 2px; }
 
-    .msg.bot {
-      background: #e2e8f0;
-      color: var(--text-dark);
-      align-self: flex-start;
-      border-top-left-radius: 2px;
-    }
-
-    .msg.user {
-      background: var(--primary-orange);
-      color: white;
-      align-self: flex-end;
-      border-top-right-radius: 2px;
-    }
-
-    .chat-input-area {
-      display: flex;
-      padding: 10px;
-      background: white;
-      border-top: 1px solid var(--border-color);
-      gap: 8px;
-    }
-
-    .chat-input-area input {
-      flex: 1;
-      padding: 8px 12px;
-      border: 1px solid var(--border-color);
-      border-radius: 20px;
-      font-size: 13px;
-      outline: none;
-    }
-
-    .chat-input-area button {
-      background: var(--primary-blue);
-      color: white;
-      border: none;
-      padding: 8px 15px;
-      border-radius: 20px;
-      cursor: pointer;
-      font-size: 12px;
-      font-weight: bold;
-    }
+    .chat-input-area { display: flex; padding: 10px; background: white; border-top: 1px solid var(--border-color); gap: 8px; }
+    .chat-input-area input { flex: 1; padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 20px; font-size: 13px; outline: none; }
+    .chat-input-area button { background: var(--primary-blue); color: white; border: none; padding: 8px 15px; border-radius: 20px; cursor: pointer; font-size: 12px; font-weight: bold; }
     .chat-input-area button:hover { background: #008ec4; }
 
-    .typing-indicator {
-      align-self: flex-start;
-      background: #e2e8f0;
-      padding: 8px 12px;
-      border-radius: 8px;
-      display: none;
-      font-size: 12px;
-      color: var(--text-muted);
-    }
+    .typing-indicator { align-self: flex-start; background: #e2e8f0; padding: 8px 12px; border-radius: 8px; display: none; font-size: 12px; color: var(--text-muted); }
 
     @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        /* FLOATING WHATSAPP BUTTON */
-    .whatsapp-float {
-      position: fixed;
-      width: 56px;
-      height: 56px;
-      bottom: 24px;
-      left: 24px;
-      background-color: #25D366;
-      color: #FFF;
-      border-radius: 50%;
-      text-align: center;
-      font-size: 30px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-      z-index: 100;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      text-decoration: none;
-      transition: all 0.3s ease;
-      animation: pulseWhatsApp 2s infinite;
-    }
-
-    .whatsapp-float:hover {
-      background-color: #128C7E;
-      transform: scale(1.1);
-    }
-
-    @keyframes pulseWhatsApp {
-      0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.5); }
-      70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
-    }
-
   </style>
 </head>
 <body>
@@ -599,7 +629,7 @@
         <span class="close-chat" onclick="toggleChat()">×</span>
       </div>
       <div class="chat-messages" id="chatMessages">
-        <div class="msg bot">Asc! Waxaan ahay AI kalkaaliyaha Dahabi Academy. Maxaan kaa caawiyaa foomka isdiwaangalinta ama koorsooyinka?</div>
+        <div class="msg bot">Asc! Waxaan ahay AI kalkaaliyaha Dahabi Academy. Maxaan kaa caawiyaa foomka isdiwaangalinta ama koorsooyinka? Qor su'aashaada!</div>
       </div>
       <div class="typing-indicator" id="typingIndicator">Dahabi AI ayaa qoraysa...</div>
       <div class="chat-input-area">
@@ -636,31 +666,37 @@
           <legend>Qaybta 1<sup>aad</sup> Xogta Shaqsiga</legend>
           
           <div class="input-group">
-            <label for="firstName">First Name </label>
+            <label for="firstName">First Name</label>
             <input type="text" id="firstName" name="firstName" placeholder="Gali magacaaga koowaad" maxlength="30" required>
             <div class="error-msg" id="error-firstName" role="alert">Fadlan qor magacaaga koowaad</div>
           </div>
           
           <div class="input-group">
-            <label for="middleName">Middle Name </label>
+            <label for="middleName">Middle Name</label>
             <input type="text" id="middleName" name="middleName" placeholder="Gali magaca aabaha" maxlength="30" required>
             <div class="error-msg" id="error-middleName" role="alert">Fadlan qor magaca aabaha</div>
           </div>
           
           <div class="input-group">
-            <label for="lastName">Last Name </label>
+            <label for="lastName">Last Name</label>
             <input type="text" id="lastName" name="lastName" placeholder="Gali awowgaa" maxlength="30" required>
             <div class="error-msg" id="error-lastName" role="alert">Fadlan qor magaca awowga</div>
           </div>
+
+          <div class="input-group">
+            <label for="age">Age (Da'daada)</label>
+            <input type="number" id="age" name="age" placeholder="Tusaale: 22" min="10" max="100" required>
+            <div class="error-msg" id="error-age" role="alert">Fadlan qor da'daada</div>
+          </div>
           
           <div class="input-group">
-            <span id="genderLabel" style="font-size: var(--font-label); font-weight: 600; color: #4a5568; display: block; margin-bottom: 6px;">Gender </span>
-            <div class="gender-container" role="radiogroup" aria-labelledby="genderLabel">
-              <div class="gender-option">
+            <span id="genderLabel" style="font-size: var(--font-label); font-weight: 600; color: #4a5568; display: block; margin-bottom: 6px;">Gender</span>
+            <div class="radio-container-custom" role="radiogroup" aria-labelledby="genderLabel">
+              <div class="radio-option-custom">
                 <input type="radio" id="male" name="gender" value="Male" required>
                 <label for="male">Male</label>
               </div>
-              <div class="gender-option">
+              <div class="radio-option-custom">
                 <input type="radio" id="female" name="gender" value="Female" required>
                 <label for="female">Female</label>
               </div>
@@ -669,13 +705,13 @@
           </div>
           
           <div class="input-group">
-            <label for="email">Email Address </label>
+            <label for="email">Email Address</label>
             <input type="email" id="email" name="email" placeholder="tusaale@gmail.com" required>
             <div class="error-msg" id="error-email" role="alert">Fadlan qor foomka email-ka oo sax ah</div>
           </div>
           
           <div class="input-group">
-            <label for="phone">Phone Number </label>
+            <label for="phone">Phone Number</label>
             <div class="phone-flex">
               <select id="countryCode" name="countryCode" required>
                 <option value="+252">🇸🇴 SO (+252)</option>
@@ -689,6 +725,18 @@
             </div>
             <div class="error-msg" id="error-phone" role="alert">Fadlan qor nambarkaaga tel-ka oo sax ah (Kaliya 6 ilaa 9 nambar)</div>
           </div>
+
+          <div class="input-group">
+            <label for="whatsappPhone">WhatsApp Number</label>
+            <input type="text" id="whatsappPhone" name="whatsappPhone" placeholder="Gali nambarkaaga WhatsApp-ka oo sax ah" required>
+            <div class="error-msg" id="error-whatsappPhone" role="alert">Fadlan qor nambarkaaga WhatsApp-ka</div>
+          </div>
+
+          <div class="input-group">
+            <label for="fullAddress">Full Address (Ciwaankaaga rasmiga ah)</label>
+            <input type="text" id="fullAddress" name="fullAddress" placeholder="Tusaale: Jigjiga, Ethiopia ama Muqdisho, Soomaaliya" required>
+            <div class="error-msg" id="error-fullAddress" role="alert">Fadlan qor ciwaankaaga oo buuxa</div>
+          </div>
         </fieldset>
       </section>
       
@@ -697,9 +745,10 @@
           <legend>Qaybta 2<sup>aad</sup> Doorashada Koorsada</legend>
           
           <div class="input-group">
-            <label for="course">Select Course </label>
+            <label for="course">Select Course</label>
             <select id="course" name="course" onchange="updateCoursePrice()" required>
               <option value="">-- Dooro Xirfadda Aad Rabto --</option>
+              <option value="computer">BARASHADA COMPUTER-KA (FREE) 💻</option>
               <option value="photoshop">Adobe Photoshop</option>
               <option value="illustrator">Adobe Illustrator</option>
               <option value="indesign">Adobe Indesign</option>
@@ -726,7 +775,71 @@
 
       <section>
         <fieldset>
-          <legend>Qaybta Lacag Bixinta (Payment Details)</legend>
+          <legend>Qaybta 3<sup>aad</sup> Su'aalaha Muhiimka ah</legend>
+
+          <div class="input-group">
+            <label for="referralSource">Sidee link-ga Diwangalinta Dahabi Academy Kugu sogadhey ama Aad kuheshey?</label>
+            <select id="referralSource" name="referralSource" required>
+              <option value="">-- Dooro mid ka mid ah --</option>
+              <option value="Facebook">Facebook</option>
+              <option value="TikTok">TikTok</option>
+              <option value="WhatsApp Group">WhatsApp Group</option>
+              <option value="Saaxiib">Saaxiib ayaa ii soo diray</option>
+              <option value="Kale">Si kale</option>
+            </select>
+            <div class="error-msg" id="error-referralSource" role="alert">Fadlan noo sheeg qaabka aad ku heshay link-ga</div>
+          </div>
+
+          <div class="input-group">
+            <span id="hasLaptopLabel" style="font-size: var(--font-label); font-weight: 600; color: #4a5568; display: block; margin-bottom: 6px;">Maheysataa laptop💻 ama Computer🖥?</span>
+            <div class="radio-container-custom" role="radiogroup" aria-labelledby="hasLaptopLabel">
+              <div class="radio-option-custom">
+                <input type="radio" id="laptopYes" name="hasLaptop" value="Haa" required>
+                <label for="laptopYes">Haa, waan heystaa</label>
+              </div>
+              <div class="radio-option-custom">
+                <input type="radio" id="laptopNo" name="hasLaptop" value="Maya" required>
+                <label for="laptopNo">Maya, ma heysto</label>
+              </div>
+            </div>
+            <div class="error-msg" id="error-hasLaptop" role="alert">Fadlan dooro mid ka mid ah xulashooyinka</div>
+          </div>
+
+          <div class="input-group">
+            <span id="commitmentLabel" style="font-size: var(--font-label); font-weight: 600; color: #4a5568; display: block; margin-bottom: 6px;">Maballan-qadeysaa inaad maalinkasta Wakhti gaar ah uhuridoonto Casharada Course-ga?</span>
+            <div class="radio-container-custom" role="radiogroup" aria-labelledby="commitmentLabel">
+              <div class="radio-option-custom">
+                <input type="radio" id="commitYes" name="timeCommitment" value="Haa" required>
+                <label for="commitYes">Haa, waan ballan-qaadayaa</label>
+              </div>
+              <div class="radio-option-custom">
+                <input type="radio" id="commitNo" name="timeCommitment" value="Maya" required>
+                <label for="commitNo">Maya</label>
+              </div>
+            </div>
+            <div class="error-msg" id="error-timeCommitment" role="alert">Fadlan cadeey ballan-qaadkeeda casharada</div>
+          </div>
+
+          <div class="input-group">
+            <span id="feeAgreementLabel" style="font-size: var(--font-label); font-weight: 600; color: #4a5568; display: block; margin-bottom: 6px;">Ma Aqbashey in bishii lagaaqaadayo Qidmad dhan $7?</span>
+            <div class="radio-container-custom" role="radiogroup" aria-labelledby="feeAgreementLabel">
+              <div class="radio-option-custom">
+                <input type="radio" id="feeYes" name="feeAgreement" value="Haa" required>
+                <label for="feeYes">Haa, waan ogolahay</label>
+              </div>
+              <div class="radio-option-custom">
+                <input type="radio" id="feeNo" name="feeAgreement" value="Maya" required>
+                <label for="feeNo">Maya, ma ogoli</label>
+              </div>
+            </div>
+            <div class="error-msg" id="error-feeAgreement" role="alert">Fadlan dooro haddii aad ogoshahay qidmada bishii</div>
+          </div>
+        </fieldset>
+      </section>
+
+      <section id="paymentSection">
+        <fieldset>
+          <legend>Qaybta 3<sup>aad</sup>: Caddeynta Lacag-Bixinta</legend>
           <div style="background-color: #f8fafc; border-left: 4px solid var(--primary-blue); padding: 15px; border-radius: 4px; margin-bottom: 15px;">
             <p><strong>🇸🇴 Gudaha Soomaaliya:</strong></p>
             <p style="font-size: 13px; color: var(--text-dark); margin-left: 10px;">
@@ -736,16 +849,34 @@
             <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 10px 0;">
             <p><strong>🌐 Dibada (US, UK, Europe, etc.):</strong></p>
             <p style="font-size: 13px; color: var(--text-dark); margin-left: 10px;">
-              Ku soo dir <b>Commercial Bank of Ethiopia (CBE)</b><br>
-              Account Number: <b>1000743300002</b> (Ayanle Ahmed Mohamed)
+               Isticmaal App-ka <b>Remitly</b>, <b>WorldRemit</b> ama <b>TapTap Send</b> si aad toos ugu soo Dirto Bangiyada Ethiopia:<br>
+              🏦 Bankiga: <b>Commercial Bank of Ethiopia (CBE)</b><br>
+              Account Name: <b>Ayanle Ahmed Mohamed</b><br>
+              Account Number: <b>1000743300002</b>
             </p>
+          </div>
+
+          <div class="input-group" id="receiptUploadGroup">
+            <label style="margin-bottom: 6px;">Upload Payment Screenshot *</label>
+            
+            <div class="file-drop-area" id="dropArea">
+              <span class="upload-icon" id="uploadIcon">📷</span>
+              <span class="file-msg" id="fileMessage">Jiid ama guji halkan si aad u soo geliso sawirka (Max: 2MB, JPG/PNG/WEBP)</span>
+              <input class="file-input-hidden" type="file" id="receiptFile" name="receiptFile" accept="image/jpeg, image/png, image/webp" onchange="handleFileSelect(event)">
+            </div>
+            
+            <div class="preview-container" id="previewContainer">
+              <button type="button" class="remove-preview-btn" onclick="clearFileSelection(event)">×</button>
+              <img src="" alt="Payment Screenshot Preview Image" class="preview-image" id="imagePreview">
+            </div>
+            <div class="error-msg" id="error-receiptFile" role="alert">Fadlan soo gali sawirka caddeynta lacag-bixinta oo sax ah (oo ka yar 2MB)</div>
           </div>
         </fieldset>
       </section>
 
       <section>
         <fieldset>
-          <legend>Qaybta 3<sup>aad</sup> Macluumaad Dheeraad ah</legend>
+          <legend>Qaybta 4<sup>aad</sup> Macluumaad Dheeraad ah</legend>
           <div class="input-group">
             <label for="message">Haddii Aad Qabto Su'aal Halkan Ku Qor (Optional)</label>
             <textarea id="message" name="message" rows="4" placeholder="Halkan ku qor fariintaada hadday jirto..." maxlength="500"></textarea>
@@ -765,7 +896,6 @@
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
-    // Waxaa halkan laga soo kordhiyey "doc" iyo "setDoc" bedelkii "addDoc"
     import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
     const firebaseConfig = {
@@ -780,36 +910,143 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
+    function convertFileToBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+      });
+    }
+
+    window.handleFileSelect = function(event) {
+      const input = event.target;
+      const file = input.files[0];
+      processFile(file);
+    };
+
+    function processFile(file) {
+      const fileMessage = document.getElementById('fileMessage');
+      const previewContainer = document.getElementById('previewContainer');
+      const imagePreview = document.getElementById('imagePreview');
+      const uploadIcon = document.getElementById('uploadIcon');
+      const dropArea = document.getElementById('dropArea');
+
+      if (file) {
+        if (file.size > 2 * 1024 * 1024) {
+          alert("Sawirka uu aad u weyn yahay! Fadlan soo geli sawir ka yar 2MB.");
+          clearFileSelection();
+          return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          imagePreview.src = e.target.result;
+          previewContainer.style.display = 'block';
+          fileMessage.innerHTML = `✅ Sawirka si guul leh ayaa loo doortay:<br><b>${file.name}</b>`;
+          uploadIcon.innerText = "✨";
+          dropArea.style.borderColor = "var(--primary-blue)";
+          dropArea.style.backgroundColor = "#f0fdf4";
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    window.clearFileSelection = function(event) {
+      if(event) event.preventDefault();
+      const input = document.getElementById('receiptFile');
+      if (input) input.value = '';
+      
+      const previewContainer = document.getElementById('previewContainer');
+      const imagePreview = document.getElementById('imagePreview');
+      const fileMessage = document.getElementById('fileMessage');
+      const uploadIcon = document.getElementById('uploadIcon');
+      const dropArea = document.getElementById('dropArea');
+
+      if(previewContainer) previewContainer.style.display = 'none';
+      if(imagePreview) imagePreview.src = '';
+      if(fileMessage) fileMessage.innerHTML = `Jiid ama guji halkan si aad u soo geliso sawirka (Max: 2MB, JPG/PNG/WEBP)`;
+      if(uploadIcon) uploadIcon.innerText = "📷";
+      
+      if(dropArea) {
+        dropArea.style.borderColor = "#cbd5e0";
+        dropArea.style.backgroundColor = "#f8fafc";
+      }
+    };
+
     window.validateAndSubmitForm = async function(event) {
       event.preventDefault();
       const form = document.getElementById('regForm');
       let isValid = true;
       
-      const fields = ['firstName', 'middleName', 'lastName', 'email', 'phone', 'course'];
+      const fields = ['firstName', 'middleName', 'lastName', 'age', 'email', 'phone', 'whatsappPhone', 'fullAddress', 'course', 'referralSource'];
+      
+      const selectedCourse = document.getElementById('course').value;
+      if (selectedCourse !== 'computer') {
+        fields.push('receiptFile');
+      }
+
       fields.forEach(field => {
-        document.getElementById(field).parentElement.classList.remove('input-error');
+        const el = document.getElementById(field);
+        if (el && el.parentElement) {
+          el.parentElement.classList.remove('input-error');
+        }
         if (document.getElementById('error-' + field)) {
           document.getElementById('error-' + field).style.display = 'none';
         }
       });
       document.getElementById('error-gender').style.display = 'none';
+      document.getElementById('error-hasLaptop').style.display = 'none';
+      document.getElementById('error-timeCommitment').style.display = 'none';
+      document.getElementById('error-feeAgreement').style.display = 'none';
 
       fields.forEach(field => {
         const input = document.getElementById(field);
-        if (!input.value.trim()) {
-          input.parentElement.classList.add('input-error');
-          if (document.getElementById('error-' + field)) {
-            document.getElementById('error-' + field).style.display = 'block';
+        if (field === 'receiptFile' && selectedCourse !== 'computer') {
+          if (!input || input.files.length === 0) {
+            const dropArea = document.getElementById('dropArea').parentElement;
+            if (dropArea) dropArea.classList.add('input-error');
+            if (document.getElementById('error-receiptFile')) {
+              document.getElementById('error-receiptFile').style.display = 'block';
+            }
+            isValid = false;
           }
-          isValid = false;
+        } else {
+          if (!input || !input.value.trim()) {
+            if (input && input.parentElement) input.parentElement.classList.add('input-error');
+            if (document.getElementById('error-' + field)) {
+              document.getElementById('error-' + field).style.display = 'block';
+            }
+            isValid = false;
+          }
         }
       });
 
-      // Gender Validation
       const maleChecked = document.getElementById('male').checked;
       const femaleChecked = document.getElementById('female').checked;
       if (!maleChecked && !femaleChecked) {
         document.getElementById('error-gender').style.display = 'block';
+        isValid = false;
+      }
+
+      const laptopYes = document.getElementById('laptopYes').checked;
+      const laptopNo = document.getElementById('laptopNo').checked;
+      if (!laptopYes && !laptopNo) {
+        document.getElementById('error-hasLaptop').style.display = 'block';
+        isValid = false;
+      }
+
+      const commitYes = document.getElementById('commitYes').checked;
+      const commitNo = document.getElementById('commitNo').checked;
+      if (!commitYes && !commitNo) {
+        document.getElementById('error-timeCommitment').style.display = 'block';
+        isValid = false;
+      }
+
+      const feeYes = document.getElementById('feeYes').checked;
+      const feeNo = document.getElementById('feeNo').checked;
+      if (!feeYes && !feeNo) {
+        document.getElementById('error-feeAgreement').style.display = 'block';
         isValid = false;
       }
 
@@ -824,26 +1061,38 @@
       btnSpinner.style.display = "block";
       btnText.innerText = "Gudbinaya xogta...";
 
-      // Standardize the student email to avoid spaces and ensure proper document naming
       const rawEmail = document.getElementById('email').value.trim().toLowerCase();
 
       try {
-        // Prepare data payload structure
+        let receiptBase64 = "No receipt required (Free Course)";
+        const receiptInput = document.getElementById('receiptFile');
+        
+        if (selectedCourse !== 'computer' && receiptInput.files.length > 0) {
+          receiptBase64 = await convertFileToBase64(receiptInput.files[0]);
+        }
+
         const registrationData = {
           firstName: document.getElementById('firstName').value.trim(),
           middleName: document.getElementById('middleName').value.trim(),
           lastName: document.getElementById('lastName').value.trim(),
+          age: document.getElementById('age').value.trim(),
           gender: maleChecked ? "Male" : "Female",
           email: rawEmail,
           phone: document.getElementById('phone').value.trim(),
           countryCode: document.getElementById('countryCode').value,
-          course: document.getElementById('course').value,
+          whatsappPhone: document.getElementById('whatsappPhone').value.trim(),
+          fullAddress: document.getElementById('fullAddress').value.trim(),
+          course: selectedCourse,
           coursePrice: document.getElementById('coursePrice').value,
+          referralSource: document.getElementById('referralSource').value,
+          hasLaptop: laptopYes ? "Haa" : "Maya",
+          timeCommitment: commitYes ? "Haa" : "Maya",
+          feeAgreement: feeYes ? "Haa" : "Maya",
           message: document.getElementById('message').value.trim(),
+          receiptImage: receiptBase64,
           createdAt: new Date().toISOString()
         };
 
-        // Custom ID Upgrade: setDoc() uses rawEmail as the Document ID instead of generating random hashes
         await setDoc(doc(db, "registrations", rawEmail), registrationData);
 
         form.classList.remove('form-locked');
@@ -852,7 +1101,7 @@
         btnText.innerText = "ISDIWAANGALI HADA";
         document.getElementById('successCard').style.display = 'flex';
       } catch (e) {
-        console.error("Firestore custom document creation failed: ", e);
+        console.error("Firestore error: ", e);
         alert("Cillad ayaa dhacday intii xogta la badbaadinayey, fadlan dib u tijaabi.");
         form.classList.remove('form-locked');
         submitBtn.disabled = false;
@@ -860,10 +1109,41 @@
         btnText.innerText = "ISDIWAANGALI HADA";
       }
     };
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const dropArea = document.getElementById('dropArea');
+      const fileInput = document.getElementById('receiptFile');
+
+      if(dropArea && fileInput) {
+        ['dragenter', 'dragover'].forEach(eventName => {
+          dropArea.addEventListener(eventName, (e) => {
+            e.preventDefault();
+            dropArea.classList.add('drag-over');
+          }, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+          dropArea.addEventListener(eventName, (e) => {
+            e.preventDefault();
+            dropArea.classList.remove('drag-over');
+          }, false);
+        });
+
+        dropArea.addEventListener('drop', (e) => {
+          const dt = e.dataTransfer;
+          const files = dt.files;
+          if(files.length > 0 && files[0].type.startsWith('image/')) {
+            fileInput.files = files;
+            processFile(files[0]);
+          }
+        }, false);
+      }
+    });
   </script>
 
   <script>
     const coursePriceDetails = {
+      "computer": { current: "$0.00 USD", original: "$0.00 USD" },
       "photoshop": { current: "$25.00 USD", original: "$40.00 USD" },
       "illustrator": { current: "$25.00 USD", original: "$40.00 USD" },
       "indesign": { current: "$20.00 USD", original: "$35.00 USD" },
@@ -880,19 +1160,30 @@
       const courseSelect = document.getElementById('course');
       const hiddenPriceInput = document.getElementById('coursePrice');
       const displayBox = document.getElementById('priceDisplayBox');
+      const paymentSection = document.getElementById('paymentSection');
       const selectedCourse = courseSelect.value;
 
       if (selectedCourse && coursePriceDetails[selectedCourse]) {
         const priceObj = coursePriceDetails[selectedCourse];
-        hiddenPriceInput.value = `Price: ${priceObj.current} (Was ${priceObj.original})`;
-        displayBox.innerHTML = `<span class="original-price">${priceObj.original}</span><span class="discounted-price">${priceObj.current}</span><span class="discount-tag">OFFER 🔥</span>`;
+        
+        if (selectedCourse === "computer") {
+          hiddenPriceInput.value = `Price: ${priceObj.current}`;
+          displayBox.innerHTML = `<span class="discounted-price" style="color: #2e7d32;">${priceObj.current}</span><span class="discount-tag" style="background-color: #e8f5e9; color: #2e7d32; border-color: #c8e6c9;">FREE 🔥</span>`;
+          paymentSection.style.display = "none";
+          clearFileSelection();
+        } else {
+          hiddenPriceInput.value = `Price: ${priceObj.current} (Was ${priceObj.original})`;
+          displayBox.innerHTML = `<span class="original-price">${priceObj.original}</span><span class="discounted-price">${priceObj.current}</span><span class="discount-tag">OFFER 🔥</span>`;
+          paymentSection.style.display = "block";
+        }
       } else {
         hiddenPriceInput.value = "";
         displayBox.innerHTML = `<span style="color: #718096; font-size: 13px;">Dooro koorsada si aad u aragto qiimaha</span>`;
+        paymentSection.style.display = "block";
       }
     }
 
-    // ==================== AI CHAT FUNCTIONS ====================
+    // AI CHAT CORE BRAIN - KNOWLEDGE EXPANSION
     function toggleChat() {
       const chatBox = document.getElementById('chatBox');
       chatBox.style.display = (chatBox.style.display === 'flex') ? 'none' : 'flex';
@@ -917,7 +1208,7 @@
         indicator.style.display = 'none';
         const reply = getBotResponse(text);
         appendMessage(reply, 'bot');
-      }, 1000);
+      }, 800);
     }
 
     function appendMessage(text, sender) {
@@ -929,33 +1220,59 @@
       chatMessages.scrollTop = chatMessages.scrollHeight;
     }
 
-    // AI Response Matrix
     function getBotResponse(input) {
       const text = input.toLowerCase();
       
-      if (text.includes('qiim') || text.includes('lacag') || text.includes('bixin') || text.includes('dollar')) {
-        return "Qiimaha koorsooyinka aad ayuu u jaban yahay! Inta badan waa inta u dhaxaysa $15 ilaa $40 hadda oo uu dhimis jiro. Waxaad ku bixin kartaa E-Birr (Waafi) nambarka +251908864749 ama CBE Bank.";
-      }
-      if (text.includes('koorso') || text.includes('barad') || text.includes('baran')) {
-        return "Waxaan bixinaa koorsooyin casri ah sida Graphic Design (Photoshop, Illustrator, Motion), Web Design, Programming, AI, iyo Speaking English. Dooro mid ka mid ah liiska foomka kore!";
-      }
-      if (text.includes('saac') || text.includes('goorm') || text.includes('bilaab')) {
-        return "Koorsooyinka waxay u baxaan si Online ah maalin kasta. Saacadaha waxaa lagu waafajiyaa marka ay ardayda u firaaqo tahay rasmiga ah.";
-      }
-      if (text.includes('shahaad') || text.includes('shhad')) {
-        return "Haa, arday kasta oo dhammaysta koorsada wuxuu helayaa Shahaado rasmi ah oo Dahabi Academy ah oo xirfadiisa caddaynaysa.";
-      }
-      if (text.includes('asc') || text.includes('hello') || text.includes('hi')) {
-        return "Kalaay diisan! Soo dhawaaw, maxaan kaaga caawiyaa maanta oo ku saabsan Dahabi Academy?";
+      // 1. Maalmaha Fasaxa (Weekend)
+      if (text.includes('fasax') || text.includes('weekend') || text.includes('khamiis') || text.includes('jimce') || text.includes('days off')) {
+        return "📅 Maalmaha fasaxa ee Dahabi Academy waa dhamaadka usbuuca: Khamiis iyo Jimce (Thursday & Friday). Maalmahaas casharo cusub lama soo dhigo.";
       }
       
-      return "Su'aal fiican! Si aad faahfaahin buuxda uga hesho arrintaas, fadlan guji calaamadda cagaaran ee WhatsApp-ka bidixda hoose ku taal si aad toos ula hadasho maamulka foomka.";
+      // 2. Goormee casharka la soo geliyaa? / Telegram Group
+      if (text.includes('goorma') || text.includes('saacad') || text.includes('casar') || text.includes('galab') || text.includes('telegram') || text.includes('group')) {
+        return "📲 Casharada waxaa ladiiwaangaliyaa oo lagu bixiyaa Group Telegram oo gaar ah. Waxaa casharka la soo geliyaa maalin kasta xilliga Casarka ama Galabta.";
+      }
+
+      // 3. Xoriyada wakhtiga / Download casharka
+      if (text.includes('firaaqo') || text.includes('daawan') || text.includes('download') || text.includes('video') || text.includes('video-ga') || text.includes('wakhti')) {
+        return "🎬 Faa'iidada Dahabi Academy waa xoriyad wakhti buuxda! Video-ga casharka waad iska soo dejisan kartaa (download), markaad firaaqo tahayna waad daawan kartaa xilli kasta oo aad doonto.";
+      }
+
+      // 4. Qiimaha iyo Lacag bixinta
+      if (text.includes('qiim') || text.includes('lacag') || text.includes('bixin') || text.includes('dollar') || text.includes('qidmad') || text.includes('7$')) {
+        return "💰 Koorsooyinkeena qiimahoodu waa kuwo aad u jaban (qiyaastii $20-$60 halkii koorso oo dhan). \n\nSidoo kale, qidmada billaha ah waa kaliya $7. Waxaad ku bixin kartaa E-Birr (Waafi) ama CBE Bank haddii aad joogto Itoobiya/Soomaaliya, iyo Remitly/WorldRemit haddii aad dibadda joogto.";
+      }
+
+      // 5. Koorsooyinka la bixiyo
+      if (text.includes('koorso') || text.includes('barad') || text.includes('baran') || text.includes('course')) {
+        return "💻 Waxaan bixinaa koorsooyin tayo sare leh: \n- Barashada Computer-ka (100% FREE)\n- Adobe Photoshop, Illustrator, InDesign\n- Adobe Premiere Pro & After Effects (Motion Graphics)\n- Web Design & Programming\n- Barashada AI (Artificial Intelligence)\n- Speaking English (Koorso Afka Ingiriisiga ah).";
+      }
+
+      // 6. Shahaadada (Certificate)
+      if (text.includes('shahaado') || text.includes('shhad') || text.includes('caddeyn') || text.includes('certificate')) {
+        return "🎓 Haa, dabcan! Arday kasta oo si guul leh u dhammaysta koorsada wuxuu helayaa Shahaado rasmi ah oo ka tirsan Dahabi Academy, taas oo caddaynaysa xirfadda aad baratay.";
+      }
+
+      // 7. Software-ka iyo Caawinaada Computer-ka
+      if (text.includes('software') || text.includes('rakib') || text.includes('photoshop sidee') || text.includes('macalin') || text.includes('caawin')) {
+        return "🛠 Ardayda waxaa si buuxda looga caawiyaa sidii ay kombuyuutarkooda ugu rakibi lahaayeen software-ada (sida Photoshop, Illustrator, iwm). Sidoo kale, macallinka iyo nidaamka caawinta ardayda ayaa mar walba diyaar kuu ah.";
+      }
+
+      // 8. Salaanta koowaad
+      if (text.includes('asc') || text.includes('salaam') || text.includes('hello') || text.includes('hi')) {
+        return "Waaleykumus Salaam! Ku soo dhawaaw Dahabi Academy AI Agent. \n\nWaxaad i weydiin kartaa wax walba oo ku saabsan: Maalmaha fasaxa, habka Telegram-ka, xilliyada casharada, software-ada, shahaadada, ama qaabka lacag bixinta.";
+      }
+
+      // Default Response
+      return "💡 Su'aal aad u fiican! Si aad faahfaahin dheeraad ah ama caawinaad toos ah uga hesho maamulka, fadlan guji calaamadda cagaaran ee WhatsApp-ka (bidixda hoose) si aad toos ula xiriirto.";
     }
 
     function closeSuccess() {
       document.getElementById('successCard').style.display = 'none';
       document.getElementById('regForm').reset();
       document.getElementById('priceDisplayBox').innerHTML = `<span style="color: #718096; font-size: 13px;">Dooro koorsada si aad u aragto qiimaha</span>`;
+      document.getElementById('paymentSection').style.display = "block";
+      clearFileSelection();
     }
   </script>
 </body>
