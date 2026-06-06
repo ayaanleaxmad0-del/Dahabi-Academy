@@ -394,6 +394,15 @@
       text-align: center;
     }
 
+    /* ANIMATED SUBMIT BUTTON WITH BRAND COLORS */
+    @keyframes pulse-shake {
+      0% { transform: scale(1); box-shadow: 0 4px 12px rgba(240, 101, 34, 0.3); }
+      25% { transform: scale(1.02) rotate(0.5deg); }
+      50% { transform: scale(1) rotate(-0.5deg); box-shadow: 0 6px 20px rgba(240, 101, 34, 0.55), 0 0 0 6px rgba(0, 163, 224, 0.2); }
+      75% { transform: scale(1.01) rotate(0.3deg); }
+      100% { transform: scale(1) rotate(0); box-shadow: 0 4px 12px rgba(240, 101, 34, 0.3); }
+    }
+
     .submit-btn {
       width: 100%;
       background: var(--primary-orange);
@@ -404,19 +413,19 @@
       font-weight: 700;
       border-radius: 8px;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: background 0.2s ease;
       margin-top: 10px;
-      box-shadow: 0 4px 12px rgba(240, 101, 34, 0.25);
       display: flex;
       justify-content: center;
       align-items: center;
       gap: 10px;
+      animation: pulse-shake 2.5s infinite ease-in-out;
     }
 
     .submit-btn:hover:not(:disabled) {
       background: var(--primary-orange-hover);
-      transform: translateY(-1px);
-      box-shadow: 0 6px 18px rgba(240, 101, 34, 0.35);
+      animation-play-state: paused;
+      box-shadow: 0 6px 22px rgba(240, 101, 34, 0.45);
     }
 
     .submit-btn:disabled {
@@ -425,6 +434,7 @@
       cursor: not-allowed;
       box-shadow: none;
       transform: none;
+      animation: none;
     }
 
     .spinner {
@@ -642,8 +652,8 @@
   <main class="form-container">
     <div class="success-popup" id="successCard" role="dialog" aria-modal="true" aria-labelledby="successTitle">
       <div style="font-size: 60px; margin-bottom: 15px;">👍🏽🎉</div>
-      <h2 id="successTitle">Isdiwaangalintu Waa Guul!</h2>
-      <p>Ku soo dhawaada Dahabi Academy. Xogtaada isdiwaangalinta si guul leh ayaa loo helay. Dhawaan ayaan kula soo xiriiri doonaa.</p>
+      <h2 id="successTitle">Sisax Ah ayad Isku diwaangalisey!</h2>
+      <p id="successIdMessage">Ku soo dhawoow Dahabi Academy. Xogtaada isdiwaangalinta si guul leh ayaa loo helay. Dhawaan ayaan kula soo xiriiri doonaa, Lasoco dhaqdhaqaaqa Gmail-kaga & Whatsapp-kaga.</p>
       <button class="back-btn" type="button" onclick="closeSuccess()">Dib Ulaabo</button>
     </div>
 
@@ -659,7 +669,7 @@
       <p>Foomka Isdiwaangalinta Rasmiga Ah ee <b>( Ardeyda)</b></p>
     </header>
 
-    <form id="regForm" onsubmit="validateAndSubmitForm(event)" novalidate>
+    <form id="regForm" novalidate>
       
       <section>
         <fieldset>
@@ -724,12 +734,6 @@
               <input type="text" id="phone" name="phone" placeholder="61xxxxxxx" pattern="[0-9]{6,9}" maxlength="9" required>
             </div>
             <div class="error-msg" id="error-phone" role="alert">Fadlan qor nambarkaaga tel-ka oo sax ah (Kaliya 6 ilaa 9 nambar)</div>
-          </div>
-
-          <div class="input-group">
-            <label for="whatsappPhone">WhatsApp Number</label>
-            <input type="text" id="whatsappPhone" name="whatsappPhone" placeholder="Gali nambarkaaga WhatsApp-ka oo sax ah" required>
-            <div class="error-msg" id="error-whatsappPhone" role="alert">Fadlan qor nambarkaaga WhatsApp-ka</div>
           </div>
 
           <div class="input-group">
@@ -820,7 +824,7 @@
             <div class="error-msg" id="error-timeCommitment" role="alert">Fadlan cadeey ballan-qaadkeeda casharada</div>
           </div>
 
-          <div class="input-group">
+          <div class="input-group" id="feeAgreementGroup">
             <span id="feeAgreementLabel" style="font-size: var(--font-label); font-weight: 600; color: #4a5568; display: block; margin-bottom: 6px;">Ma Aqbashey in bishii lagaaqaadayo Qidmad dhan $7?</span>
             <div class="radio-container-custom" role="radiogroup" aria-labelledby="feeAgreementLabel">
               <div class="radio-option-custom">
@@ -894,9 +898,19 @@
     </form>
   </main>
 
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script type="text/javascript">
+     (function(){
+        // Kici nidaamka EmailJS adoo adeegsanaya Public Key-gaaga
+        emailjs.init("5SbyXf1l3QfHThW6b"); 
+     })();
+  </script>
+
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
     import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+    import { getDatabase, ref, runTransaction } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-database.js";
+    import { initializeAppCheck, ReCaptchaV3Provider } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app-check.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyDrQ-tycjjDU4gek1jz07IIg30VFio-1so",
@@ -904,11 +918,18 @@
       projectId: "dahabi-academy",
       storageBucket: "dahabi-academy.firebasestorage.app",
       messagingSenderId: "754314547074",
-      appId: "1:754314547074:web:cac5ac7ae057af9c0a499b"
+      appId: "1:754314547074:web:cac5ac7ae057af9c0a499b",
+      databaseURL: "https://dahabi-academy-default-rtdb.firebaseio.com"
     };
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
+    const rtdb = getDatabase(app);
+
+    initializeAppCheck(app, {
+      provider: new ReCaptchaV3Provider('6Ld8NhAtAAAAAFBib8qShIkujeDCjaTMU64I9K0a'),
+      isTokenAutoRefreshEnabled: true
+    });
 
     function convertFileToBase64(file) {
       return new Promise((resolve, reject) => {
@@ -974,26 +995,23 @@
       }
     };
 
+    // MAAMULKA GUDBINTA CUSUB EE ISKU-XIDHAN
     window.validateAndSubmitForm = async function(event) {
-      event.preventDefault();
+      if(event) event.preventDefault();
       const form = document.getElementById('regForm');
       let isValid = true;
       
-      const fields = ['firstName', 'middleName', 'lastName', 'age', 'email', 'phone', 'whatsappPhone', 'fullAddress', 'course', 'referralSource'];
-      
+      const fields = ['firstName', 'middleName', 'lastName', 'age', 'email', 'phone', 'fullAddress', 'course', 'referralSource'];
       const selectedCourse = document.getElementById('course').value;
+      
       if (selectedCourse !== 'computer') {
         fields.push('receiptFile');
       }
 
       fields.forEach(field => {
         const el = document.getElementById(field);
-        if (el && el.parentElement) {
-          el.parentElement.classList.remove('input-error');
-        }
-        if (document.getElementById('error-' + field)) {
-          document.getElementById('error-' + field).style.display = 'none';
-        }
+        if (el && el.parentElement) el.parentElement.classList.remove('input-error');
+        if (document.getElementById('error-' + field)) document.getElementById('error-' + field).style.display = 'none';
       });
       document.getElementById('error-gender').style.display = 'none';
       document.getElementById('error-hasLaptop').style.display = 'none';
@@ -1004,19 +1022,15 @@
         const input = document.getElementById(field);
         if (field === 'receiptFile' && selectedCourse !== 'computer') {
           if (!input || input.files.length === 0) {
-            const dropArea = document.getElementById('dropArea').parentElement;
-            if (dropArea) dropArea.classList.add('input-error');
-            if (document.getElementById('error-receiptFile')) {
-              document.getElementById('error-receiptFile').style.display = 'block';
-            }
+            const dropAreaBox = document.getElementById('dropArea');
+            if (dropAreaBox && dropAreaBox.parentElement) dropAreaBox.parentElement.classList.add('input-error');
+            if (document.getElementById('error-receiptFile')) document.getElementById('error-receiptFile').style.display = 'block';
             isValid = false;
           }
-        } else {
+        } else if (field !== 'receiptFile') {
           if (!input || !input.value.trim()) {
             if (input && input.parentElement) input.parentElement.classList.add('input-error');
-            if (document.getElementById('error-' + field)) {
-              document.getElementById('error-' + field).style.display = 'block';
-            }
+            if (document.getElementById('error-' + field)) document.getElementById('error-' + field).style.display = 'block';
             isValid = false;
           }
         }
@@ -1045,7 +1059,7 @@
 
       const feeYes = document.getElementById('feeYes').checked;
       const feeNo = document.getElementById('feeNo').checked;
-      if (!feeYes && !feeNo) {
+      if (selectedCourse !== 'computer' && !feeYes && !feeNo) {
         document.getElementById('error-feeAgreement').style.display = 'block';
         isValid = false;
       }
@@ -1064,44 +1078,76 @@
       const rawEmail = document.getElementById('email').value.trim().toLowerCase();
 
       try {
+        // 1. KORDHINTA +1 COUTNERS-KA EE REALTIME DATABASE
+        const counterRef = ref(rtdb, "current_number");
+        const result = await runTransaction(counterRef, (currentValue) => {
+            if (currentValue === null) return 1;
+            return currentValue + 1;
+        });
+
+        const nextID = result.snapshot.val();
+        const formattedNumber = String(nextID).padStart(3, '0');
+        const generatedStudentID = `DA-${formattedNumber}`; // Tusaale: DA-001
+
         let receiptBase64 = "No receipt required (Free Course)";
         const receiptInput = document.getElementById('receiptFile');
-        
         if (selectedCourse !== 'computer' && receiptInput.files.length > 0) {
           receiptBase64 = await convertFileToBase64(receiptInput.files[0]);
         }
 
+        const fName = document.getElementById('firstName').value.trim();
+        const mName = document.getElementById('middleName').value.trim();
+        const lName = document.getElementById('lastName').value.trim();
+        const fullStudentName = `${fName} ${mName} ${lName}`;
+
+        const courseSelect = document.getElementById('course');
+        const selectedCourseText = courseSelect.options[courseSelect.selectedIndex].text;
+
         const registrationData = {
-          firstName: document.getElementById('firstName').value.trim(),
-          middleName: document.getElementById('middleName').value.trim(),
-          lastName: document.getElementById('lastName').value.trim(),
+          studentID: generatedStudentID,
+          firstName: fName,
+          middleName: mName,
+          lastName: lName,
           age: document.getElementById('age').value.trim(),
           gender: maleChecked ? "Male" : "Female",
           email: rawEmail,
           phone: document.getElementById('phone').value.trim(),
           countryCode: document.getElementById('countryCode').value,
-          whatsappPhone: document.getElementById('whatsappPhone').value.trim(),
           fullAddress: document.getElementById('fullAddress').value.trim(),
           course: selectedCourse,
+          courseTitleFull: selectedCourseText,
           coursePrice: document.getElementById('coursePrice').value,
           referralSource: document.getElementById('referralSource').value,
           hasLaptop: laptopYes ? "Haa" : "Maya",
           timeCommitment: commitYes ? "Haa" : "Maya",
-          feeAgreement: feeYes ? "Haa" : "Maya",
+          feeAgreement: selectedCourse === 'computer' ? "Free (No fee)" : (feeYes ? "Haa" : "Maya"),
           message: document.getElementById('message').value.trim(),
           receiptImage: receiptBase64,
           createdAt: new Date().toISOString()
         };
 
+        // 2. BADBAADINTA COLECTION-KA FIRESTORE
         await setDoc(doc(db, "registrations", rawEmail), registrationData);
 
+        // 3. U DIRISTA EMAILJS (TEMPLATE ID: template_knxi9ef)
+        const templateParams = {
+            student_name: `${fName} ${mName}`,
+            course_name: selectedCourseText,
+            email: rawEmail,
+            student_id: generatedStudentID
+        };
+        await emailjs.send('service_r7vc226', 'template_knxi9ef', templateParams);
+
+        // Kici shaashadda guusha
         form.classList.remove('form-locked');
         submitBtn.disabled = false;
         btnSpinner.style.display = "none";
         btnText.innerText = "ISDIWAANGALI HADA";
+        
+        document.getElementById('successIdMessage').innerHTML = `Ku soo dhawoow Dahabi Academy. Xogtaada isdiwaangalinta si guul leh ayaa loo helay. ID-gaaga rasmiga ah waa: <b>${generatedStudentID}</b>. Dhawaan ayaan kula soo xiriiri doonaa, Lasoco dhaqdhaqaaqa Gmail-kaga & Whatsapp-kaga.`;
         document.getElementById('successCard').style.display = 'flex';
       } catch (e) {
-        console.error("Firestore error: ", e);
+        console.error("Gudbinta wey fashilantay: ", e);
         alert("Cillad ayaa dhacday intii xogta la badbaadinayey, fadlan dib u tijaabi.");
         form.classList.remove('form-locked');
         submitBtn.disabled = false;
@@ -1109,6 +1155,9 @@
         btnText.innerText = "ISDIWAANGALI HADA";
       }
     };
+
+    // Toos ugu xir badanka dirista foomka rasmiga ah
+    document.getElementById('regForm').addEventListener('submit', window.validateAndSubmitForm);
 
     document.addEventListener("DOMContentLoaded", () => {
       const dropArea = document.getElementById('dropArea');
@@ -1161,6 +1210,10 @@
       const hiddenPriceInput = document.getElementById('coursePrice');
       const displayBox = document.getElementById('priceDisplayBox');
       const paymentSection = document.getElementById('paymentSection');
+      const feeAgreementGroup = document.getElementById('feeAgreementGroup');
+      
+      const feeYes = document.getElementById('feeYes');
+      const feeNo = document.getElementById('feeNo');
       const selectedCourse = courseSelect.value;
 
       if (selectedCourse && coursePriceDetails[selectedCourse]) {
@@ -1169,21 +1222,33 @@
         if (selectedCourse === "computer") {
           hiddenPriceInput.value = `Price: ${priceObj.current}`;
           displayBox.innerHTML = `<span class="discounted-price" style="color: #2e7d32;">${priceObj.current}</span><span class="discount-tag" style="background-color: #e8f5e9; color: #2e7d32; border-color: #c8e6c9;">FREE 🔥</span>`;
+          
           paymentSection.style.display = "none";
+          
+          feeAgreementGroup.style.display = "none";
+          if(feeYes) { feeYes.required = false; feeYes.checked = false; }
+          if(feeNo) { feeNo.required = false; feeNo.checked = false; }
+          
           clearFileSelection();
         } else {
           hiddenPriceInput.value = `Price: ${priceObj.current} (Was ${priceObj.original})`;
           displayBox.innerHTML = `<span class="original-price">${priceObj.original}</span><span class="discounted-price">${priceObj.current}</span><span class="discount-tag">OFFER 🔥</span>`;
+          
           paymentSection.style.display = "block";
+          
+          feeAgreementGroup.style.display = "block";
+          if(feeYes) feeYes.required = true;
+          if(feeNo) feeNo.required = true;
         }
       } else {
         hiddenPriceInput.value = "";
         displayBox.innerHTML = `<span style="color: #718096; font-size: 13px;">Dooro koorsada si aad u aragto qiimaha</span>`;
         paymentSection.style.display = "block";
+        feeAgreementGroup.style.display = "block";
       }
     }
 
-    // AI CHAT CORE BRAIN - KNOWLEDGE EXPANSION
+    // AI CHAT CORE BRAIN
     function toggleChat() {
       const chatBox = document.getElementById('chatBox');
       chatBox.style.display = (chatBox.style.display === 'flex') ? 'none' : 'flex';
@@ -1223,47 +1288,30 @@
     function getBotResponse(input) {
       const text = input.toLowerCase();
       
-      // 1. Maalmaha Fasaxa (Weekend)
       if (text.includes('fasax') || text.includes('weekend') || text.includes('khamiis') || text.includes('jimce') || text.includes('days off')) {
-        return "📅 Maalmaha fasaxa ee Dahabi Academy waa dhamaadka usbuuca: Khamiis iyo Jimce (Thursday & Friday). Maalmahaas casharo cusub lama soo dhigo.";
+        return "📅 Maalmaha fasaxa ee Dahabi Academy waa dhamaadka usbuuca: Khamiis iyo Jimce (Thursday & Friday). Maalmahaas casharo cuzub lama soo dhigo.";
       }
-      
-      // 2. Goormee casharka la soo geliyaa? / Telegram Group
       if (text.includes('goorma') || text.includes('saacad') || text.includes('casar') || text.includes('galab') || text.includes('telegram') || text.includes('group')) {
         return "📲 Casharada waxaa ladiiwaangaliyaa oo lagu bixiyaa Group Telegram oo gaar ah. Waxaa casharka la soo geliyaa maalin kasta xilliga Casarka ama Galabta.";
       }
-
-      // 3. Xoriyada wakhtiga / Download casharka
       if (text.includes('firaaqo') || text.includes('daawan') || text.includes('download') || text.includes('video') || text.includes('video-ga') || text.includes('wakhti')) {
         return "🎬 Faa'iidada Dahabi Academy waa xoriyad wakhti buuxda! Video-ga casharka waad iska soo dejisan kartaa (download), markaad firaaqo tahayna waad daawan kartaa xilli kasta oo aad doonto.";
       }
-
-      // 4. Qiimaha iyo Lacag bixinta
       if (text.includes('qiim') || text.includes('lacag') || text.includes('bixin') || text.includes('dollar') || text.includes('qidmad') || text.includes('7$')) {
         return "💰 Koorsooyinkeena qiimahoodu waa kuwo aad u jaban (qiyaastii $20-$60 halkii koorso oo dhan). \n\nSidoo kale, qidmada billaha ah waa kaliya $7. Waxaad ku bixin kartaa E-Birr (Waafi) ama CBE Bank haddii aad joogto Itoobiya/Soomaaliya, iyo Remitly/WorldRemit haddii aad dibadda joogto.";
       }
-
-      // 5. Koorsooyinka la bixiyo
       if (text.includes('koorso') || text.includes('barad') || text.includes('baran') || text.includes('course')) {
         return "💻 Waxaan bixinaa koorsooyin tayo sare leh: \n- Barashada Computer-ka (100% FREE)\n- Adobe Photoshop, Illustrator, InDesign\n- Adobe Premiere Pro & After Effects (Motion Graphics)\n- Web Design & Programming\n- Barashada AI (Artificial Intelligence)\n- Speaking English (Koorso Afka Ingiriisiga ah).";
       }
-
-      // 6. Shahaadada (Certificate)
       if (text.includes('shahaado') || text.includes('shhad') || text.includes('caddeyn') || text.includes('certificate')) {
         return "🎓 Haa, dabcan! Arday kasta oo si guul leh u dhammaysta koorsada wuxuu helayaa Shahaado rasmi ah oo ka tirsan Dahabi Academy, taas oo caddaynaysa xirfadda aad baratay.";
       }
-
-      // 7. Software-ka iyo Caawinaada Computer-ka
       if (text.includes('software') || text.includes('rakib') || text.includes('photoshop sidee') || text.includes('macalin') || text.includes('caawin')) {
         return "🛠 Ardayda waxaa si buuxda looga caawiyaa sidii ay kombuyuutarkooda ugu rakibi lahaayeen software-ada (sida Photoshop, Illustrator, iwm). Sidoo kale, macallinka iyo nidaamka caawinta ardayda ayaa mar walba diyaar kuu ah.";
       }
-
-      // 8. Salaanta koowaad
       if (text.includes('asc') || text.includes('salaam') || text.includes('hello') || text.includes('hi')) {
         return "Waaleykumus Salaam! Ku soo dhawaaw Dahabi Academy AI Agent. \n\nWaxaad i weydiin kartaa wax walba oo ku saabsan: Maalmaha fasaxa, habka Telegram-ka, xilliyada casharada, software-ada, shahaadada, ama qaabka lacag bixinta.";
       }
-
-      // Default Response
       return "💡 Su'aal aad u fiican! Si aad faahfaahin dheeraad ah ama caawinaad toos ah uga hesho maamulka, fadlan guji calaamadda cagaaran ee WhatsApp-ka (bidixda hoose) si aad toos ula xiriirto.";
     }
 
@@ -1272,9 +1320,9 @@
       document.getElementById('regForm').reset();
       document.getElementById('priceDisplayBox').innerHTML = `<span style="color: #718096; font-size: 13px;">Dooro koorsada si aad u aragto qiimaha</span>`;
       document.getElementById('paymentSection').style.display = "block";
+      document.getElementById('feeAgreementGroup').style.display = "block";
       clearFileSelection();
     }
   </script>
 </body>
 </html>
-
