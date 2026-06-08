@@ -652,7 +652,7 @@
   <main class="form-container">
     <div class="success-popup" id="successCard" role="dialog" aria-modal="true" aria-labelledby="successTitle">
       <div style="font-size: 60px; margin-bottom: 15px;">👍🏽🎉</div>
-      <h2 id="successTitle">Sisax Ah ayad Isku diwaangalisey!</h2>
+      <h2 id="successTitle">Si sax ah ayaad isku diwaangelisay!</h2>
       <p id="successIdMessage">Ku soo dhawoow Dahabi Academy. Xogtaada isdiwaangalinta si guul leh ayaa loo helay. Dhawaan ayaan kula soo xiriiri doonaa, Lasoco dhaqdhaqaaqa Gmail-kaga & Whatsapp-kaga.</p>
       <button class="back-btn" type="button" onclick="closeSuccess()">Dib Ulaabo</button>
     </div>
@@ -901,7 +901,6 @@
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script type="text/javascript">
      (function(){
-        // Kici nidaamka EmailJS adoo adeegsanaya Public Key-gaaga
         emailjs.init("5SbyXf1l3QfHThW6b"); 
      })();
   </script>
@@ -956,7 +955,7 @@
       if (file) {
         if (file.size > 2 * 1024 * 1024) {
           alert("Sawirka uu aad u weyn yahay! Fadlan soo geli sawir ka yar 2MB.");
-          clearFileSelection();
+          window.clearFileSelection();
           return;
         }
 
@@ -974,7 +973,7 @@
     }
 
     window.clearFileSelection = function(event) {
-      if(event) event.preventDefault();
+      if(event && event.preventDefault) event.preventDefault();
       const input = document.getElementById('receiptFile');
       if (input) input.value = '';
       
@@ -995,7 +994,6 @@
       }
     };
 
-    // MAAMULKA GUDBINTA CUSUB EE ISKU-XIDHAN
     window.validateAndSubmitForm = async function(event) {
       if(event) event.preventDefault();
       const form = document.getElementById('regForm');
@@ -1078,7 +1076,6 @@
       const rawEmail = document.getElementById('email').value.trim().toLowerCase();
 
       try {
-        // 1. KORDHINTA +1 COUTNERS-KA EE REALTIME DATABASE
         const counterRef = ref(rtdb, "current_number");
         const result = await runTransaction(counterRef, (currentValue) => {
             if (currentValue === null) return 1;
@@ -1087,7 +1084,7 @@
 
         const nextID = result.snapshot.val();
         const formattedNumber = String(nextID).padStart(3, '0');
-        const generatedStudentID = `DA-${formattedNumber}`; // Tusaale: DA-001
+        const generatedStudentID = `DA-${formattedNumber}`;
 
         let receiptBase64 = "No receipt required (Free Course)";
         const receiptInput = document.getElementById('receiptFile');
@@ -1098,7 +1095,6 @@
         const fName = document.getElementById('firstName').value.trim();
         const mName = document.getElementById('middleName').value.trim();
         const lName = document.getElementById('lastName').value.trim();
-        const fullStudentName = `${fName} ${mName} ${lName}`;
 
         const courseSelect = document.getElementById('course');
         const selectedCourseText = courseSelect.options[courseSelect.selectedIndex].text;
@@ -1126,10 +1122,8 @@
           createdAt: new Date().toISOString()
         };
 
-        // 2. BADBAADINTA COLECTION-KA FIRESTORE
         await setDoc(doc(db, "registrations", rawEmail), registrationData);
 
-        // 3. U DIRISTA EMAILJS (TEMPLATE ID: template_knxi9ef)
         const templateParams = {
             student_name: `${fName} ${mName}`,
             course_name: selectedCourseText,
@@ -1138,7 +1132,6 @@
         };
         await emailjs.send('service_r7vc226', 'template_knxi9ef', templateParams);
 
-        // Kici shaashadda guusha
         form.classList.remove('form-locked');
         submitBtn.disabled = false;
         btnSpinner.style.display = "none";
@@ -1156,7 +1149,6 @@
       }
     };
 
-    // Toos ugu xir badanka dirista foomka rasmiga ah
     document.getElementById('regForm').addEventListener('submit', window.validateAndSubmitForm);
 
     document.addEventListener("DOMContentLoaded", () => {
@@ -1229,7 +1221,7 @@
           if(feeYes) { feeYes.required = false; feeYes.checked = false; }
           if(feeNo) { feeNo.required = false; feeNo.checked = false; }
           
-          clearFileSelection();
+          if(window.clearFileSelection) window.clearFileSelection();
         } else {
           hiddenPriceInput.value = `Price: ${priceObj.current} (Was ${priceObj.original})`;
           displayBox.innerHTML = `<span class="original-price">${priceObj.original}</span><span class="discounted-price">${priceObj.current}</span><span class="discount-tag">OFFER 🔥</span>`;
@@ -1248,7 +1240,6 @@
       }
     }
 
-    // AI CHAT CORE BRAIN
     function toggleChat() {
       const chatBox = document.getElementById('chatBox');
       chatBox.style.display = (chatBox.style.display === 'flex') ? 'none' : 'flex';
@@ -1321,8 +1312,9 @@
       document.getElementById('priceDisplayBox').innerHTML = `<span style="color: #718096; font-size: 13px;">Dooro koorsada si aad u aragto qiimaha</span>`;
       document.getElementById('paymentSection').style.display = "block";
       document.getElementById('feeAgreementGroup').style.display = "block";
-      clearFileSelection();
+      if(window.clearFileSelection) window.clearFileSelection();
     }
   </script>
 </body>
 </html>
+
