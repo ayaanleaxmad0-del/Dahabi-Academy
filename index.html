@@ -653,7 +653,7 @@
     <div class="success-popup" id="successCard" role="dialog" aria-modal="true" aria-labelledby="successTitle">
       <div style="font-size: 60px; margin-bottom: 15px;">👍🏽🎉</div>
       <h2 id="successTitle">Sisax Ah ayad Isku diwaangalisey!</h2>
-      <p id="successIdMessage">Ku soo dhawoow Dahabi Academy. Xogtaada isdiwaangalinta si guul leh ayaa loo helay. Dhawaan ayaan kula soo xiriiri doonaa, Lasoco dhaqdhaqaaqa Gmail-kaga & Whatsapp-kaga.</p>
+      <p>Ku soo dhawoow Dahabi Academy. Xogtaada isdiwaangalinta si guul leh ayaa loo helay. Dhawaan ayaan kula soo xiriiri doon Naa, Lasoco dhaqdhaqaaqa Gmail-kaga & Whatsapp-kaga</p>
       <button class="back-btn" type="button" onclick="closeSuccess()">Dib Ulaabo</button>
     </div>
 
@@ -669,7 +669,7 @@
       <p>Foomka Isdiwaangalinta Rasmiga Ah ee <b>( Ardeyda)</b></p>
     </header>
 
-    <form id="regForm" novalidate>
+    <form id="regForm" onsubmit="validateAndSubmitForm(event)" novalidate>
       
       <section>
         <fieldset>
@@ -898,19 +898,11 @@
     </form>
   </main>
 
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-  <script type="text/javascript">
-     (function(){
-        // Kici nidaamka EmailJS adoo adeegsanaya Public Key-gaaga
-        emailjs.init("5SbyXf1l3QfHThW6b"); 
-     })();
-  </script>
-
-   <script type="module">
+  <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
     import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
-    import { getDatabase, ref, runTransaction } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-database.js";
-    // AFEEF: Haddii aad reCAPTCHA suuq geyso mooyee, App Check halkan ka saar inta aad tijaabada ku jirto si uusan xogta u xirin.
+    // 1. Soo daji maktabadda ammaan ee Firebase App Check
+    import { initializeAppCheck, ReCaptchaV3Provider } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app-check.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyDrQ-tycjjDU4gek1jz07IIg30VFio-1so",
@@ -918,15 +910,18 @@
       projectId: "dahabi-academy",
       storageBucket: "dahabi-academy.firebasestorage.app",
       messagingSenderId: "754314547074",
-      appId: "1:754314547074:web:cac5ac7ae057af9c0a499b",
-      databaseURL: "https://dahabi-academy-default-rtdb.firebaseio.com"
+      appId: "1:754314547074:web:cac5ac7ae057af9c0a499b"
     };
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
-    const rtdb = getDatabase(app);
 
-    // Kaga shaqaysii Base64 compression ama hubi in foomka sawirkiisu aad u yar yahay
+    // 2. Kici nidaamka App Check adoo isticmaalaya furahaaga Site Key-ga rasmiga ah
+    initializeAppCheck(app, {
+      provider: new ReCaptchaV3Provider('6Ld8NhAtAAAAAFBib8qShIkujeDCjaTMU64I9K0a'),
+      isTokenAutoRefreshEnabled: true
+    });
+
     function convertFileToBase64(file) {
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -936,7 +931,6 @@
       });
     }
 
-    // Hubi in function-nadan ay aduunka u furan yihiin si HTML-ku u arko
     window.handleFileSelect = function(event) {
       const input = event.target;
       const file = input.files[0];
@@ -951,10 +945,9 @@
       const dropArea = document.getElementById('dropArea');
 
       if (file) {
-        // MAQAAL MUHIIM AH: Waxaan hoos ugu dhignay 800KB si uusan Firestore u crash-gareyn (Xadka Firestore waa 1MB)
-        if (file.size > 800 * 1024) {
-          alert("Sawirka rasiidka rasmiga ah wuxuu ka weyn yahay 800KB! Fadlan soo geli sawir ka yar (Screenshot caadi ah).");
-          window.clearFileSelection();
+        if (file.size > 2 * 1024 * 1024) {
+          alert("Sawirka uu aad u weyn yahay! Fadlan soo geli sawir ka yar 2MB.");
+          clearFileSelection();
           return;
         }
 
@@ -972,7 +965,7 @@
     }
 
     window.clearFileSelection = function(event) {
-      if(event && event.preventDefault) event.preventDefault();
+      if(event) event.preventDefault();
       const input = document.getElementById('receiptFile');
       if (input) input.value = '';
       
@@ -994,42 +987,48 @@
     };
 
     window.validateAndSubmitForm = async function(event) {
-      if(event) event.preventDefault();
+      event.preventDefault();
       const form = document.getElementById('regForm');
       let isValid = true;
       
       const fields = ['firstName', 'middleName', 'lastName', 'age', 'email', 'phone', 'fullAddress', 'course', 'referralSource'];
-      const selectedCourse = document.getElementById('course').value;
       
-      if (selectedCourse !== 'computer' && selectedCourse !== '') {
+      const selectedCourse = document.getElementById('course').value;
+      if (selectedCourse !== 'computer') {
         fields.push('receiptFile');
       }
 
-      // Nadiifi khaladaadkii hore
       fields.forEach(field => {
         const el = document.getElementById(field);
-        if (el && el.parentElement) el.parentElement.classList.remove('input-error');
-        if (document.getElementById('error-' + field)) document.getElementById('error-' + field).style.display = 'none';
+        if (el && el.parentElement) {
+          el.parentElement.classList.remove('input-error');
+        }
+        if (document.getElementById('error-' + field)) {
+          document.getElementById('error-' + field).style.display = 'none';
+        }
       });
       document.getElementById('error-gender').style.display = 'none';
       document.getElementById('error-hasLaptop').style.display = 'none';
       document.getElementById('error-timeCommitment').style.display = 'none';
       document.getElementById('error-feeAgreement').style.display = 'none';
 
-      // Hubi validation-ka asaasiga ah
       fields.forEach(field => {
         const input = document.getElementById(field);
         if (field === 'receiptFile' && selectedCourse !== 'computer') {
           if (!input || input.files.length === 0) {
-            const dropAreaBox = document.getElementById('dropArea');
-            if (dropAreaBox && dropAreaBox.parentElement) dropAreaBox.parentElement.classList.add('input-error');
-            if (document.getElementById('error-receiptFile')) document.getElementById('error-receiptFile').style.display = 'block';
+            const dropArea = document.getElementById('dropArea').parentElement;
+            if (dropArea) dropArea.classList.add('input-error');
+            if (document.getElementById('error-receiptFile')) {
+              document.getElementById('error-receiptFile').style.display = 'block';
+            }
             isValid = false;
           }
         } else if (field !== 'receiptFile') {
           if (!input || !input.value.trim()) {
             if (input && input.parentElement) input.parentElement.classList.add('input-error');
-            if (document.getElementById('error-' + field)) document.getElementById('error-' + field).style.display = 'block';
+            if (document.getElementById('error-' + field)) {
+              document.getElementById('error-' + field).style.display = 'block';
+            }
             isValid = false;
           }
         }
@@ -1077,42 +1076,17 @@
       const rawEmail = document.getElementById('email').value.trim().toLowerCase();
 
       try {
-        // 1. Samee Student ID ka dhex dhasha Realtime Database
-        let nextID = Math.floor(Math.random() * 900) + 100; // ID ku meel gaar ah haddii transaction-ku fashilmo
-        try {
-          const counterRef = ref(rtdb, "current_number");
-          const result = await runTransaction(counterRef, (currentValue) => {
-              if (currentValue === null) return 101;
-              return currentValue + 1;
-          });
-          if(result.committed) {
-            nextID = result.snapshot.val();
-          }
-        } catch(rtdbErr) {
-          console.warn("Realtime Database counter error, using random ID fallback", rtdbErr);
-        }
-
-        const generatedStudentID = `DA-${nextID}`;
-
-        // 2. Habee sawirka Base64 rasiidka
         let receiptBase64 = "No receipt required (Free Course)";
         const receiptInput = document.getElementById('receiptFile');
-        if (selectedCourse !== 'computer' && receiptInput && receiptInput.files.length > 0) {
+        
+        if (selectedCourse !== 'computer' && receiptInput.files.length > 0) {
           receiptBase64 = await convertFileToBase64(receiptInput.files[0]);
         }
 
-        const fName = document.getElementById('firstName').value.trim();
-        const mName = document.getElementById('middleName').value.trim();
-        const lName = document.getElementById('lastName').value.trim();
-
-        const courseSelect = document.getElementById('course');
-        const selectedCourseText = courseSelect.options[courseSelect.selectedIndex].text;
-
         const registrationData = {
-          studentID: generatedStudentID,
-          firstName: fName,
-          middleName: mName,
-          lastName: lName,
+          firstName: document.getElementById('firstName').value.trim(),
+          middleName: document.getElementById('middleName').value.trim(),
+          lastName: document.getElementById('lastName').value.trim(),
           age: document.getElementById('age').value.trim(),
           gender: maleChecked ? "Male" : "Female",
           email: rawEmail,
@@ -1120,8 +1094,7 @@
           countryCode: document.getElementById('countryCode').value,
           fullAddress: document.getElementById('fullAddress').value.trim(),
           course: selectedCourse,
-          courseTitleFull: selectedCourseText,
-          coursePrice: document.getElementById('coursePrice').value || "$7/Month",
+          coursePrice: document.getElementById('coursePrice').value,
           referralSource: document.getElementById('referralSource').value,
           hasLaptop: laptopYes ? "Haa" : "Maya",
           timeCommitment: commitYes ? "Haa" : "Maya",
@@ -1131,41 +1104,22 @@
           createdAt: new Date().toISOString()
         };
 
-        // 3. U dir Firestore (Halkan qofka email-kiisa ayaa loo sameeyay document name)
         await setDoc(doc(db, "registrations", rawEmail), registrationData);
 
-        // 4. U dir EmailJS (Ardayga guusha u sheeg)
-        try {
-          const templateParams = {
-              student_name: `${fName} ${mName}`,
-              course_name: selectedCourseText,
-              email: rawEmail,
-              student_id: generatedStudentID
-          };
-          await emailjs.send('service_r7vc226', 'template_knxi9ef', templateParams);
-        } catch(emailErr) {
-          console.error("EmailJS ma bixin laakiin xogta Firebase waa la keydiyay:", emailErr);
-        }
-
-        // Guul! Muuji popup-ka
         form.classList.remove('form-locked');
         submitBtn.disabled = false;
         btnSpinner.style.display = "none";
         btnText.innerText = "ISDIWAANGALI HADA";
-        
-        document.getElementById('successIdMessage').innerHTML = `Ku soo dhawoow Dahabi Academy. Xogtaada isdiwaangalinta si guul leh ayaa loo helay. ID-gaaga rasmiga ah waa: <b>${generatedStudentID}</b>. Dhawaan ayaan kula soo xiriiri doonaa, Lasoco dhaqdhaqaaqa Gmail-kaga & Whatsapp-kaga.`;
         document.getElementById('successCard').style.display = 'flex';
       } catch (e) {
-        console.error("Gudbinta wey fashilantay: ", e);
-        alert("Cillad ayaa dhacday intii xogta la badbaadinayey. Hubi internet-kaaga ama cabbirka sawirka.");
+        console.error("Firestore error: ", e);
+        alert("Cillad ayaa dhacday intii xogta la badbaadinayey, fadlan dib u tijaabi.");
         form.classList.remove('form-locked');
         submitBtn.disabled = false;
         btnSpinner.style.display = "none";
         btnText.innerText = "ISDIWAANGALI HADA";
       }
     };
-
-    document.getElementById('regForm').addEventListener('submit', window.validateAndSubmitForm);
 
     document.addEventListener("DOMContentLoaded", () => {
       const dropArea = document.getElementById('dropArea');
@@ -1197,7 +1151,6 @@
       }
     });
   </script>
-
 
   <script>
     const coursePriceDetails = {
@@ -1294,11 +1247,13 @@
       chatMessages.scrollTop = chatMessages.scrollHeight;
     }
 
+    document.getElementById('chatInput').addEventListener('keypress', handleChatKey);
+
     function getBotResponse(input) {
       const text = input.toLowerCase();
       
       if (text.includes('fasax') || text.includes('weekend') || text.includes('khamiis') || text.includes('jimce') || text.includes('days off')) {
-        return "📅 Maalmaha fasaxa ee Dahabi Academy waa dhamaadka usbuuca: Khamiis iyo Jimce (Thursday & Friday). Maalmahaas casharo cuzub lama soo dhigo.";
+        return "📅 Maalmaha fasaxa ee Dahabi Academy waa dhamaadka usbuuca: Khamiis iyo Jimce (Thursday & Friday). Maalmahaas casharo cusub lama soo dhigo.";
       }
       if (text.includes('goorma') || text.includes('saacad') || text.includes('casar') || text.includes('galab') || text.includes('telegram') || text.includes('group')) {
         return "📲 Casharada waxaa ladiiwaangaliyaa oo lagu bixiyaa Group Telegram oo gaar ah. Waxaa casharka la soo geliyaa maalin kasta xilliga Casarka ama Galabta.";
@@ -1335,4 +1290,3 @@
   </script>
 </body>
 </html>
-
