@@ -901,8 +901,6 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
     import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
-    // 1. Soo daji maktabadda ammaan ee Firebase App Check
-    import { initializeAppCheck, ReCaptchaV3Provider } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app-check.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyDrQ-tycjjDU4gek1jz07IIg30VFio-1so",
@@ -915,12 +913,6 @@
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
-
-    // 2. Kici nidaamka App Check adoo isticmaalaya furahaaga Site Key-ga rasmiga ah
-    initializeAppCheck(app, {
-      provider: new ReCaptchaV3Provider('6Ld8NhAtAAAAAFBib8qShIkujeDCjaTMU64I9K0a'),
-      isTokenAutoRefreshEnabled: true
-    });
 
     function convertFileToBase64(file) {
       return new Promise((resolve, reject) => {
@@ -1055,6 +1047,7 @@
         isValid = false;
       }
 
+      // LA SHIIDEY VALIDATION-KA KALIYA MARKA AYSAN AHAYN COMPUTER (FREE)
       const feeYes = document.getElementById('feeYes').checked;
       const feeNo = document.getElementById('feeNo').checked;
       if (selectedCourse !== 'computer' && !feeYes && !feeNo) {
@@ -1187,6 +1180,7 @@
           
           paymentSection.style.display = "none";
           
+          // KAN AYAA QARINAYA SU'AASHA $7 MARKA COMPUTER LA DOORTO
           feeAgreementGroup.style.display = "none";
           if(feeYes) { feeYes.required = false; feeYes.checked = false; }
           if(feeNo) { feeNo.required = false; feeNo.checked = false; }
@@ -1198,6 +1192,7 @@
           
           paymentSection.style.display = "block";
           
+          // KAN AYAA DIB U MUUJINAYA SU'AASHA $7 MARKA KOOSTADA LACAGTA AH LA DOORTO
           feeAgreementGroup.style.display = "block";
           if(feeYes) feeYes.required = true;
           if(feeNo) feeNo.required = true;
@@ -1246,8 +1241,6 @@
       chatMessages.appendChild(msgDiv);
       chatMessages.scrollTop = chatMessages.scrollHeight;
     }
-
-    document.getElementById('chatInput').addEventListener('keypress', handleChatKey);
 
     function getBotResponse(input) {
       const text = input.toLowerCase();
