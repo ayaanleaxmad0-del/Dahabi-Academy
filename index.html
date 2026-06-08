@@ -7,10 +7,10 @@
   <style>
     /* VARIABLES - DESIGN SYSTEM & RESPONSIVE TYPOGRAPHY */
     :root {
-      --primary-orange: #ff6600;
+      --primary-orange: #F06522;
       --primary-orange-hover: #d45316;
-      --primary-blue: #00aeef;
-      --primary-blue-alpha: rgba(0, 174, 239, 0.15);
+      --primary-blue: #00A3E0;
+      --primary-blue-alpha: rgba(0, 163, 224, 0.15);
       --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
       --text-dark: #2d3748;
       --text-muted: #718096;
@@ -275,6 +275,13 @@
       border: 1px solid #fed7d7;
       text-transform: uppercase;
     }
+    
+    .price-changed { animation: pricePop 0.4s ease-in-out; }
+    @keyframes pricePop {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.02); box-shadow: 0 0 8px rgba(240, 101, 34, 0.15); }
+      100% { transform: scale(1); }
+    }
 
     /* UPLOAD RASIIDKA */
     .file-drop-area {
@@ -372,6 +379,9 @@
       transition: background 0.2s;
       z-index: 5;
     }
+    .remove-preview-btn:hover {
+      background: #e53e3e;
+    }
 
     .whatsapp-notice {
       background-color: #e8f5e9;
@@ -382,6 +392,15 @@
       font-size: 13px;
       color: #1b5e20;
       text-align: center;
+    }
+
+    /* ANIMATED SUBMIT BUTTON WITH BRAND COLORS */
+    @keyframes pulse-shake {
+      0% { transform: scale(1); box-shadow: 0 4px 12px rgba(240, 101, 34, 0.3); }
+      25% { transform: scale(1.02) rotate(0.5deg); }
+      50% { transform: scale(1) rotate(-0.5deg); box-shadow: 0 6px 20px rgba(240, 101, 34, 0.55), 0 0 0 6px rgba(0, 163, 224, 0.2); }
+      75% { transform: scale(1.01) rotate(0.3deg); }
+      100% { transform: scale(1) rotate(0); box-shadow: 0 4px 12px rgba(240, 101, 34, 0.3); }
     }
 
     .submit-btn {
@@ -400,11 +419,12 @@
       justify-content: center;
       align-items: center;
       gap: 10px;
-      box-shadow: 0 4px 12px rgba(240, 101, 34, 0.3);
+      animation: pulse-shake 2.5s infinite ease-in-out;
     }
 
     .submit-btn:hover:not(:disabled) {
       background: var(--primary-orange-hover);
+      animation-play-state: paused;
       box-shadow: 0 6px 22px rgba(240, 101, 34, 0.45);
     }
 
@@ -413,6 +433,8 @@
       color: #718096;
       cursor: not-allowed;
       box-shadow: none;
+      transform: none;
+      animation: none;
     }
 
     .spinner {
@@ -432,6 +454,11 @@
       margin-top: 6px;
       display: none;
       font-weight: 500;
+      animation: showError 0.25s ease forwards;
+    }
+    @keyframes showError {
+      from { opacity: 0; transform: translateY(-4px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .input-error input, .input-error select, .input-error textarea, .input-error .file-drop-area {
@@ -487,6 +514,15 @@
       justify-content: center;
       align-items: center;
       text-decoration: none;
+      transition: all 0.3s ease;
+      animation: pulseWhatsApp 2s infinite;
+    }
+    .whatsapp-float:hover { background-color: #128C7E; transform: scale(1.1); }
+
+    @keyframes pulseWhatsApp {
+      0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.5); }
+      70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
     }
 
     /* AI CHAT AGENT WIDGET STYLE */
@@ -495,6 +531,7 @@
       bottom: 24px;
       right: 24px;
       z-index: 1000;
+      font-family: inherit;
     }
 
     .ai-toggle-btn {
@@ -509,6 +546,15 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      transition: all 0.3s ease;
+      animation: pulseAI 2s infinite;
+    }
+    .ai-toggle-btn:hover { transform: scale(1.05); background-color: #008ec4; }
+
+    @keyframes pulseAI {
+      0% { box-shadow: 0 0 0 0 rgba(0, 163, 224, 0.5); }
+      70% { box-shadow: 0 0 0 15px rgba(0, 163, 224, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(0, 163, 224, 0); }
     }
 
     .chat-box {
@@ -524,6 +570,7 @@
       flex-direction: column;
       overflow: hidden;
       border: 1px solid var(--border-color);
+      animation: fadeIn 0.3s ease;
     }
 
     .chat-header {
@@ -538,6 +585,7 @@
     }
     .chat-header span { display: flex; align-items: center; gap: 8px; }
     .chat-header .close-chat { cursor: pointer; font-size: 18px; opacity: 0.8; }
+    .chat-header .close-chat:hover { opacity: 1; }
 
     .chat-messages {
       flex: 1;
@@ -563,6 +611,7 @@
     .chat-input-area { display: flex; padding: 10px; background: white; border-top: 1px solid var(--border-color); gap: 8px; }
     .chat-input-area input { flex: 1; padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 20px; font-size: 13px; outline: none; }
     .chat-input-area button { background: var(--primary-blue); color: white; border: none; padding: 8px 15px; border-radius: 20px; cursor: pointer; font-size: 12px; font-weight: bold; }
+    .chat-input-area button:hover { background: #008ec4; }
 
     .typing-indicator { align-self: flex-start; background: #e2e8f0; padding: 8px 12px; border-radius: 8px; display: none; font-size: 12px; color: var(--text-muted); }
 
@@ -579,7 +628,7 @@
   </a>
 
   <div class="ai-chat-widget">
-    <button class="ai-toggle-btn" onclick="window.toggleChat()" title="Weydiiso caawimaad AI-ga">
+    <button class="ai-toggle-btn" onclick="toggleChat()" title="Weydiiso caawimaad AI-ga">
       <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M12 8V4H8"></path><rect x="4" y="8" width="16" height="12" rx="2"></rect><path d="M2 14h2"></path><path d="M20 14h2"></path><path d="M15 13v2"></path><path d="M9 13v2"></path>
       </svg>
@@ -587,15 +636,15 @@
     <div class="chat-box" id="chatBox">
       <div class="chat-header">
         <span>🤖 Dahabi AI Agent</span>
-        <span class="close-chat" onclick="window.toggleChat()">×</span>
+        <span class="close-chat" onclick="toggleChat()">×</span>
       </div>
       <div class="chat-messages" id="chatMessages">
         <div class="msg bot">Asc! Waxaan ahay AI kalkaaliyaha Dahabi Academy. Maxaan kaa caawiyaa foomka isdiwaangalinta ama koorsooyinka? Qor su'aashaada!</div>
       </div>
       <div class="typing-indicator" id="typingIndicator">Dahabi AI ayaa qoraysa...</div>
       <div class="chat-input-area">
-        <input type="text" id="chatInput" placeholder="Halkan ku qor su'aashaada..." onkeypress="window.handleChatKey(event)">
-        <button onclick="window.sendChatMessage()">Dir</button>
+        <input type="text" id="chatInput" placeholder="Halkan ku qor su'aashaada..." onkeypress="handleChatKey(event)">
+        <button onclick="sendChatMessage()">Dir</button>
       </div>
     </div>
   </div>
@@ -605,7 +654,7 @@
       <div style="font-size: 60px; margin-bottom: 15px;">👍🏽🎉</div>
       <h2 id="successTitle">Sisax Ah ayad Isku diwaangalisey!</h2>
       <p id="successIdMessage">Ku soo dhawoow Dahabi Academy. Xogtaada isdiwaangalinta si guul leh ayaa loo helay. Dhawaan ayaan kula soo xiriiri doonaa, Lasoco dhaqdhaqaaqa Gmail-kaga & Whatsapp-kaga.</p>
-      <button class="back-btn" type="button" onclick="window.closeSuccess()">Dib Ulaabo</button>
+      <button class="back-btn" type="button" onclick="closeSuccess()">Dib Ulaabo</button>
     </div>
 
     <header class="form-header">
@@ -621,6 +670,7 @@
     </header>
 
     <form id="regForm" novalidate>
+      
       <section>
         <fieldset>
           <legend>Qaybta 1<sup>aad</sup> Xogta Shaqsiga</legend>
@@ -700,7 +750,7 @@
           
           <div class="input-group">
             <label for="course">Select Course</label>
-            <select id="course" name="course" onchange="window.updateCoursePrice()" required>
+            <select id="course" name="course" onchange="updateCoursePrice()" required>
               <option value="">-- Dooro Xirfadda Aad Rabto --</option>
               <option value="computer">BARASHADA COMPUTER-KA (FREE) 💻</option>
               <option value="photoshop">Adobe Photoshop</option>
@@ -815,15 +865,15 @@
             
             <div class="file-drop-area" id="dropArea">
               <span class="upload-icon" id="uploadIcon">📷</span>
-              <span class="file-msg" id="fileMessage">Jiid ama guji halkan si aad u soo geliso sawirka (Max: 600KB, JPG/PNG/WEBP)</span>
-              <input class="file-input-hidden" type="file" id="receiptFile" name="receiptFile" accept="image/jpeg, image/png, image/webp" onchange="window.handleFileSelect(event)">
+              <span class="file-msg" id="fileMessage">Jiid ama guji halkan si aad u soo geliso sawirka (Max: 2MB, JPG/PNG/WEBP)</span>
+              <input class="file-input-hidden" type="file" id="receiptFile" name="receiptFile" accept="image/jpeg, image/png, image/webp" onchange="handleFileSelect(event)">
             </div>
             
             <div class="preview-container" id="previewContainer">
-              <button type="button" class="remove-preview-btn" onclick="window.clearFileSelection(event)">×</button>
+              <button type="button" class="remove-preview-btn" onclick="clearFileSelection(event)">×</button>
               <img src="" alt="Payment Screenshot Preview Image" class="preview-image" id="imagePreview">
             </div>
-            <div class="error-msg" id="error-receiptFile" role="alert">Fadlan soo gali sawirka caddeynta lacag-bixinta oo sax ah (oo ka yar 600KB)</div>
+            <div class="error-msg" id="error-receiptFile" role="alert">Fadlan soo gali sawirka caddeynta lacag-bixinta oo sax ah (oo ka yar 2MB)</div>
           </div>
         </fieldset>
       </section>
@@ -851,14 +901,16 @@
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script type="text/javascript">
      (function(){
+        // Kici nidaamka EmailJS adoo adeegsanaya Public Key-gaaga
         emailjs.init("5SbyXf1l3QfHThW6b"); 
      })();
   </script>
 
-  <script type="module">
+   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
     import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
     import { getDatabase, ref, runTransaction } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-database.js";
+    // AFEEF: Haddii aad reCAPTCHA suuq geyso mooyee, App Check halkan ka saar inta aad tijaabada ku jirto si uusan xogta u xirin.
 
     const firebaseConfig = {
       apiKey: "AIzaSyDrQ-tycjjDU4gek1jz07IIg30VFio-1so",
@@ -874,59 +926,7 @@
     const db = getFirestore(app);
     const rtdb = getDatabase(app);
 
-    const coursePriceDetails = {
-      "computer": { current: "$0.00 USD", original: "$0.00 USD" },
-      "photoshop": { current: "$14.00 USD", original: "$25.00 USD" },
-      "illustrator": { current: "$14.00 USD", original: "$25.00 USD" },
-      "indesign": { current: "$14.00 USD", original: "$25.00 USD" },
-      "premier": { current: "$14.00 USD", original: "$25.00 USD" },
-      "aftereffects": { current: "$14.00 USD", original: "$25.00 USD" },
-      "motion": { current: "$14.00 USD", original: "$25.00 USD" },
-      "webdesign": { current: "$14.00 USD", original: "$25.00 USD" },
-      "programming": { current: "$14.00 USD", original: "$25.00 USD" },
-      "ai": { current: "$14.00 USD", original: "$25.00 USD" },
-      "english": { current: "$14.00 USD", original: "$25.00 USD" }
-    };
-
-    // FUNCTIO-NADA OO WINDOWS LA SAARAY SI HTML-KU U ARKO
-    window.updateCoursePrice = function() {
-      const courseSelect = document.getElementById('course');
-      const hiddenPriceInput = document.getElementById('coursePrice');
-      const displayBox = document.getElementById('priceDisplayBox');
-      const paymentSection = document.getElementById('paymentSection');
-      const feeAgreementGroup = document.getElementById('feeAgreementGroup');
-      
-      const feeYes = document.getElementById('feeYes');
-      const feeNo = document.getElementById('feeNo');
-      const selectedCourse = courseSelect.value;
-
-      if (selectedCourse && coursePriceDetails[selectedCourse]) {
-        const priceObj = coursePriceDetails[selectedCourse];
-        
-        if (selectedCourse === "computer") {
-          hiddenPriceInput.value = `Price: ${priceObj.current}`;
-          displayBox.innerHTML = `<span class="discounted-price" style="color: #2e7d32;">${priceObj.current}</span><span class="discount-tag" style="background-color: #e8f5e9; color: #2e7d32; border-color: #c8e6c9;">FREE 🔥</span>`;
-          paymentSection.style.display = "none";
-          feeAgreementGroup.style.display = "none";
-          if(feeYes) { feeYes.required = false; feeYes.checked = false; }
-          if(feeNo) { feeNo.required = false; feeNo.checked = false; }
-          window.clearFileSelection();
-        } else {
-          hiddenPriceInput.value = `Price: ${priceObj.current} (Was ${priceObj.original})`;
-          displayBox.innerHTML = `<span class="original-price">${priceObj.original}</span><span class="discounted-price">${priceObj.current}</span><span class="discount-tag">OFFER 🔥</span>`;
-          paymentSection.style.display = "block";
-          feeAgreementGroup.style.display = "block";
-          if(feeYes) feeYes.required = true;
-          if(feeNo) feeNo.required = true;
-        }
-      } else {
-        hiddenPriceInput.value = "";
-        displayBox.innerHTML = `<span style="color: #718096; font-size: 13px;">Dooro koorsada si aad u aragto qiimaha</span>`;
-        paymentSection.style.display = "block";
-        feeAgreementGroup.style.display = "block";
-      }
-    };
-
+    // Kaga shaqaysii Base64 compression ama hubi in foomka sawirkiisu aad u yar yahay
     function convertFileToBase64(file) {
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -936,6 +936,7 @@
       });
     }
 
+    // Hubi in function-nadan ay aduunka u furan yihiin si HTML-ku u arko
     window.handleFileSelect = function(event) {
       const input = event.target;
       const file = input.files[0];
@@ -950,8 +951,9 @@
       const dropArea = document.getElementById('dropArea');
 
       if (file) {
-        if (file.size > 600 * 1024) {
-          alert("Sawirka rasiidka wuxuu ka weyn yahay 600KB! Fadlan soo geli sawir ka yar si uu u kaydsamo.");
+        // MAQAAL MUHIIM AH: Waxaan hoos ugu dhignay 800KB si uusan Firestore u crash-gareyn (Xadka Firestore waa 1MB)
+        if (file.size > 800 * 1024) {
+          alert("Sawirka rasiidka rasmiga ah wuxuu ka weyn yahay 800KB! Fadlan soo geli sawir ka yar (Screenshot caadi ah).");
           window.clearFileSelection();
           return;
         }
@@ -960,7 +962,7 @@
         reader.onload = function(e) {
           imagePreview.src = e.target.result;
           previewContainer.style.display = 'block';
-          fileMessage.innerHTML = `✅ Sawirka rasiidka waa la doortay:<br><b>${file.name}</b>`;
+          fileMessage.innerHTML = `✅ Sawirka si guul leh ayaa loo doortay:<br><b>${file.name}</b>`;
           uploadIcon.innerText = "✨";
           dropArea.style.borderColor = "var(--primary-blue)";
           dropArea.style.backgroundColor = "#f0fdf4";
@@ -982,7 +984,7 @@
 
       if(previewContainer) previewContainer.style.display = 'none';
       if(imagePreview) imagePreview.src = '';
-      if(fileMessage) fileMessage.innerHTML = `Jiid ama guji halkan si aad u soo geliso sawirka (Max: 600KB, JPG/PNG/WEBP)`;
+      if(fileMessage) fileMessage.innerHTML = `Jiid ama guji halkan si aad u soo geliso sawirka (Max: 2MB, JPG/PNG/WEBP)`;
       if(uploadIcon) uploadIcon.innerText = "📷";
       
       if(dropArea) {
@@ -1003,6 +1005,7 @@
         fields.push('receiptFile');
       }
 
+      // Nadiifi khaladaadkii hore
       fields.forEach(field => {
         const el = document.getElementById(field);
         if (el && el.parentElement) el.parentElement.classList.remove('input-error');
@@ -1013,6 +1016,7 @@
       document.getElementById('error-timeCommitment').style.display = 'none';
       document.getElementById('error-feeAgreement').style.display = 'none';
 
+      // Hubi validation-ka asaasiga ah
       fields.forEach(field => {
         const input = document.getElementById(field);
         if (field === 'receiptFile' && selectedCourse !== 'computer') {
@@ -1073,8 +1077,8 @@
       const rawEmail = document.getElementById('email').value.trim().toLowerCase();
 
       try {
-        // 1. GENERATE STUDENT ID TOOS AH
-        let nextID = Math.floor(Math.random() * 900) + 100;
+        // 1. Samee Student ID ka dhex dhasha Realtime Database
+        let nextID = Math.floor(Math.random() * 900) + 100; // ID ku meel gaar ah haddii transaction-ku fashilmo
         try {
           const counterRef = ref(rtdb, "current_number");
           const result = await runTransaction(counterRef, (currentValue) => {
@@ -1085,12 +1089,12 @@
             nextID = result.snapshot.val();
           }
         } catch(rtdbErr) {
-          console.warn("Realtime Database counter counter error, using random fallback", rtdbErr);
+          console.warn("Realtime Database counter error, using random ID fallback", rtdbErr);
         }
 
         const generatedStudentID = `DA-${nextID}`;
 
-        // 2. CONVERT SCREENSHOT TO BASE64
+        // 2. Habee sawirka Base64 rasiidka
         let receiptBase64 = "No receipt required (Free Course)";
         const receiptInput = document.getElementById('receiptFile');
         if (selectedCourse !== 'computer' && receiptInput && receiptInput.files.length > 0) {
@@ -1100,6 +1104,7 @@
         const fName = document.getElementById('firstName').value.trim();
         const mName = document.getElementById('middleName').value.trim();
         const lName = document.getElementById('lastName').value.trim();
+
         const courseSelect = document.getElementById('course');
         const selectedCourseText = courseSelect.options[courseSelect.selectedIndex].text;
 
@@ -1126,10 +1131,10 @@
           createdAt: new Date().toISOString()
         };
 
-        // 3. U DIR FIREBASE FIRESTORE
+        // 3. U dir Firestore (Halkan qofka email-kiisa ayaa loo sameeyay document name)
         await setDoc(doc(db, "registrations", rawEmail), registrationData);
 
-        // 4. U DIR EMAILJS ARDAYGA
+        // 4. U dir EmailJS (Ardayga guusha u sheeg)
         try {
           const templateParams = {
               student_name: `${fName} ${mName}`,
@@ -1137,12 +1142,12 @@
               email: rawEmail,
               student_id: generatedStudentID
           };
-          await emailjs.send('service_r7vc2z6', 'template_knxi9ef', templateParams);
+          await emailjs.send('service_r7vc226', 'template_knxi9ef', templateParams);
         } catch(emailErr) {
-          console.error("EmailJS error:", emailErr);
+          console.error("EmailJS ma bixin laakiin xogta Firebase waa la keydiyay:", emailErr);
         }
 
-        // GUUL! MUUJI POPUP-KA
+        // Guul! Muuji popup-ka
         form.classList.remove('form-locked');
         submitBtn.disabled = false;
         btnSpinner.style.display = "none";
@@ -1162,79 +1167,6 @@
 
     document.getElementById('regForm').addEventListener('submit', window.validateAndSubmitForm);
 
-    // FLOATING AI CHAT LOGIC
-    window.toggleChat = function() {
-      const chatBox = document.getElementById('chatBox');
-      chatBox.style.display = (chatBox.style.display === 'flex') ? 'none' : 'flex';
-    };
-
-    window.handleChatKey = function(event) {
-      if (event.key === 'Enter') window.sendChatMessage();
-    };
-
-    window.sendChatMessage = function() {
-      const input = document.getElementById('chatInput');
-      const text = input.value.trim();
-      if (!text) return;
-
-      appendMessage(text, 'user');
-      input.value = '';
-
-      const indicator = document.getElementById('typingIndicator');
-      indicator.style.display = 'block';
-
-      setTimeout(() => {
-        indicator.style.display = 'none';
-        const reply = getBotResponse(text);
-        appendMessage(reply, 'bot');
-      }, 800);
-    };
-
-    function appendMessage(text, sender) {
-      const chatMessages = document.getElementById('chatMessages');
-      const msgDiv = document.createElement('div');
-      msgDiv.className = `msg ${sender}`;
-      msgDiv.innerText = text;
-      chatMessages.appendChild(msgDiv);
-      chatMessages.scrollTop = chatMessages.scrollHeight;
-    }
-
-    function getBotResponse(input) {
-      const text = input.toLowerCase();
-      if (text.includes('fasax') || text.includes('weekend') || text.includes('khamiis') || text.includes('jimce')) {
-        return "📅 Maalmaha fasaxa ee Dahabi Academy waa dhamaadka usbuuca: Khamiis iyo Jimce (Thursday & Friday). Maalmahaas casharo cusub lama soo dhigo.";
-      }
-      if (text.includes('goorma') || text.includes('saacad') || text.includes('casar') || text.includes('galab') || text.includes('telegram')) {
-        return "📲 Casharada waxaa ladiiwaangaliyaa oo lagu bixiyaa Group Telegram oo gaar ah. Waxaa casharka la soo geliyaa maalin kasta xilliga Casarka ama Galabta.";
-      }
-      if (text.includes('firaaqo') || text.includes('daawan') || text.includes('download') || text.includes('video')) {
-        return "🎬 Faa'iidada Dahabi Academy waa xoriyad wakhti buuxda! Video-ga casharka waad iska soo dejisan kartaa (download), markaad firaaqo tahayna waad daawan kartaa xilli kasta.";
-      }
-      if (text.includes('qiim') || text.includes('lacag') || text.includes('bixin') || text.includes('dollar') || text.includes('7$')) {
-        return "💰 Koorsooyinkeena labadii biloodba waa $14 (oo u dhiganta $7 bishii). Waxaad ku bixin kartaa E-Birr (Waafi) ama CBE Bank haddii aad joogto Itoobiya/Soomaaliya, iyo Remitly/WorldRemit haddii aad dibadda joogto.";
-      }
-      if (text.includes('koorso') || text.includes('barad') || text.includes('baran') || text.includes('course')) {
-        return "💻 Waxaan bixinaa koorsooyin tayo sare leh: \n- Barashada Computer-ka (100% FREE)\n- Adobe Photoshop, Illustrator, InDesign\n- Adobe Premiere Pro & After Effects (Motion Graphics)\n- Web Design & Programming\n- Barashada AI (Artificial Intelligence)\n- Speaking English (Koorso Afka Ingiriisiga ah).";
-      }
-      if (text.includes('shahaado') || text.includes('shhad') || text.includes('certificate')) {
-        return "🎓 Haa, dabcan! Arday kasta oo si guul leh u dhammaysta koorsada wuxuu helayaa Shahaado rasmi ah oo ka tirsan Dahabi Academy.";
-      }
-      if (text.includes('asc') || text.includes('salaam') || text.includes('hello')) {
-        return "Waaleykumus Salaam! Ku soo dhawaaw Dahabi Academy AI Agent. Maxaan kaa caawiyaa foomka isdiwaangalinta ama koorsooyinka?";
-      }
-      return "💡 Su'aal aad u fiican! Si aad faahfaahin dheeraad ah ama caawinaad toos ah uga hesho maamulka, fadlan guji calaamadda cagaaran ee WhatsApp-ka (bidixda hoose) si aad toos ula xiriirto.";
-    }
-
-    window.closeSuccess = function() {
-      document.getElementById('successCard').style.display = 'none';
-      document.getElementById('regForm').reset();
-      document.getElementById('priceDisplayBox').innerHTML = `<span style="color: #718096; font-size: 13px;">Dooro koorsada si aad u aragto qiimaha</span>`;
-      document.getElementById('paymentSection').style.display = "block";
-      document.getElementById('feeAgreementGroup').style.display = "block";
-      window.clearFileSelection();
-    };
-
-    // DRAG AND DROP HANDLING
     document.addEventListener("DOMContentLoaded", () => {
       const dropArea = document.getElementById('dropArea');
       const fileInput = document.getElementById('receiptFile');
@@ -1264,6 +1196,142 @@
         }, false);
       }
     });
+  </script>
+
+
+  <script>
+    const coursePriceDetails = {
+      "computer": { current: "$0.00 USD", original: "$0.00 USD" },
+      "photoshop": { current: "$25.00 USD", original: "$40.00 USD" },
+      "illustrator": { current: "$25.00 USD", original: "$40.00 USD" },
+      "indesign": { current: "$20.00 USD", original: "$35.00 USD" },
+      "premier": { current: "$30.00 USD", original: "$45.00 USD" },
+      "aftereffects": { current: "$35.00 USD", original: "$50.00 USD" },
+      "motion": { current: "$40.00 USD", original: "$60.00 USD" },
+      "webdesign": { current: "$45.00 USD", original: "$65.00 USD" },
+      "programming": { current: "$60.00 USD", original: "$85.00 USD" },
+      "ai": { current: "$50.00 USD", original: "$75.00 USD" },
+      "english": { current: "$20.00 USD", original: "$35.00 USD" }
+    };
+
+    function updateCoursePrice() {
+      const courseSelect = document.getElementById('course');
+      const hiddenPriceInput = document.getElementById('coursePrice');
+      const displayBox = document.getElementById('priceDisplayBox');
+      const paymentSection = document.getElementById('paymentSection');
+      const feeAgreementGroup = document.getElementById('feeAgreementGroup');
+      
+      const feeYes = document.getElementById('feeYes');
+      const feeNo = document.getElementById('feeNo');
+      const selectedCourse = courseSelect.value;
+
+      if (selectedCourse && coursePriceDetails[selectedCourse]) {
+        const priceObj = coursePriceDetails[selectedCourse];
+        
+        if (selectedCourse === "computer") {
+          hiddenPriceInput.value = `Price: ${priceObj.current}`;
+          displayBox.innerHTML = `<span class="discounted-price" style="color: #2e7d32;">${priceObj.current}</span><span class="discount-tag" style="background-color: #e8f5e9; color: #2e7d32; border-color: #c8e6c9;">FREE 🔥</span>`;
+          
+          paymentSection.style.display = "none";
+          
+          feeAgreementGroup.style.display = "none";
+          if(feeYes) { feeYes.required = false; feeYes.checked = false; }
+          if(feeNo) { feeNo.required = false; feeNo.checked = false; }
+          
+          clearFileSelection();
+        } else {
+          hiddenPriceInput.value = `Price: ${priceObj.current} (Was ${priceObj.original})`;
+          displayBox.innerHTML = `<span class="original-price">${priceObj.original}</span><span class="discounted-price">${priceObj.current}</span><span class="discount-tag">OFFER 🔥</span>`;
+          
+          paymentSection.style.display = "block";
+          
+          feeAgreementGroup.style.display = "block";
+          if(feeYes) feeYes.required = true;
+          if(feeNo) feeNo.required = true;
+        }
+      } else {
+        hiddenPriceInput.value = "";
+        displayBox.innerHTML = `<span style="color: #718096; font-size: 13px;">Dooro koorsada si aad u aragto qiimaha</span>`;
+        paymentSection.style.display = "block";
+        feeAgreementGroup.style.display = "block";
+      }
+    }
+
+    // AI CHAT CORE BRAIN
+    function toggleChat() {
+      const chatBox = document.getElementById('chatBox');
+      chatBox.style.display = (chatBox.style.display === 'flex') ? 'none' : 'flex';
+    }
+
+    function handleChatKey(event) {
+      if (event.key === 'Enter') sendChatMessage();
+    }
+
+    function sendChatMessage() {
+      const input = document.getElementById('chatInput');
+      const text = input.value.trim();
+      if (!text) return;
+
+      appendMessage(text, 'user');
+      input.value = '';
+
+      const indicator = document.getElementById('typingIndicator');
+      indicator.style.display = 'block';
+
+      setTimeout(() => {
+        indicator.style.display = 'none';
+        const reply = getBotResponse(text);
+        appendMessage(reply, 'bot');
+      }, 800);
+    }
+
+    function appendMessage(text, sender) {
+      const chatMessages = document.getElementById('chatMessages');
+      const msgDiv = document.createElement('div');
+      msgDiv.className = `msg ${sender}`;
+      msgDiv.innerText = text;
+      chatMessages.appendChild(msgDiv);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    function getBotResponse(input) {
+      const text = input.toLowerCase();
+      
+      if (text.includes('fasax') || text.includes('weekend') || text.includes('khamiis') || text.includes('jimce') || text.includes('days off')) {
+        return "📅 Maalmaha fasaxa ee Dahabi Academy waa dhamaadka usbuuca: Khamiis iyo Jimce (Thursday & Friday). Maalmahaas casharo cuzub lama soo dhigo.";
+      }
+      if (text.includes('goorma') || text.includes('saacad') || text.includes('casar') || text.includes('galab') || text.includes('telegram') || text.includes('group')) {
+        return "📲 Casharada waxaa ladiiwaangaliyaa oo lagu bixiyaa Group Telegram oo gaar ah. Waxaa casharka la soo geliyaa maalin kasta xilliga Casarka ama Galabta.";
+      }
+      if (text.includes('firaaqo') || text.includes('daawan') || text.includes('download') || text.includes('video') || text.includes('video-ga') || text.includes('wakhti')) {
+        return "🎬 Faa'iidada Dahabi Academy waa xoriyad wakhti buuxda! Video-ga casharka waad iska soo dejisan kartaa (download), markaad firaaqo tahayna waad daawan kartaa xilli kasta oo aad doonto.";
+      }
+      if (text.includes('qiim') || text.includes('lacag') || text.includes('bixin') || text.includes('dollar') || text.includes('qidmad') || text.includes('7$')) {
+        return "💰 Koorsooyinkeena qiimahoodu waa kuwo aad u jaban (qiyaastii $20-$60 halkii koorso oo dhan). \n\nSidoo kale, qidmada billaha ah waa kaliya $7. Waxaad ku bixin kartaa E-Birr (Waafi) ama CBE Bank haddii aad joogto Itoobiya/Soomaaliya, iyo Remitly/WorldRemit haddii aad dibadda joogto.";
+      }
+      if (text.includes('koorso') || text.includes('barad') || text.includes('baran') || text.includes('course')) {
+        return "💻 Waxaan bixinaa koorsooyin tayo sare leh: \n- Barashada Computer-ka (100% FREE)\n- Adobe Photoshop, Illustrator, InDesign\n- Adobe Premiere Pro & After Effects (Motion Graphics)\n- Web Design & Programming\n- Barashada AI (Artificial Intelligence)\n- Speaking English (Koorso Afka Ingiriisiga ah).";
+      }
+      if (text.includes('shahaado') || text.includes('shhad') || text.includes('caddeyn') || text.includes('certificate')) {
+        return "🎓 Haa, dabcan! Arday kasta oo si guul leh u dhammaysta koorsada wuxuu helayaa Shahaado rasmi ah oo ka tirsan Dahabi Academy, taas oo caddaynaysa xirfadda aad baratay.";
+      }
+      if (text.includes('software') || text.includes('rakib') || text.includes('photoshop sidee') || text.includes('macalin') || text.includes('caawin')) {
+        return "🛠 Ardayda waxaa si buuxda looga caawiyaa sidii ay kombuyuutarkooda ugu rakibi lahaayeen software-ada (sida Photoshop, Illustrator, iwm). Sidoo kale, macallinka iyo nidaamka caawinta ardayda ayaa mar walba diyaar kuu ah.";
+      }
+      if (text.includes('asc') || text.includes('salaam') || text.includes('hello') || text.includes('hi')) {
+        return "Waaleykumus Salaam! Ku soo dhawaaw Dahabi Academy AI Agent. \n\nWaxaad i weydiin kartaa wax walba oo ku saabsan: Maalmaha fasaxa, habka Telegram-ka, xilliyada casharada, software-ada, shahaadada, ama qaabka lacag bixinta.";
+      }
+      return "💡 Su'aal aad u fiican! Si aad faahfaahin dheeraad ah ama caawinaad toos ah uga hesho maamulka, fadlan guji calaamadda cagaaran ee WhatsApp-ka (bidixda hoose) si aad toos ula xiriirto.";
+    }
+
+    function closeSuccess() {
+      document.getElementById('successCard').style.display = 'none';
+      document.getElementById('regForm').reset();
+      document.getElementById('priceDisplayBox').innerHTML = `<span style="color: #718096; font-size: 13px;">Dooro koorsada si aad u aragto qiimaha</span>`;
+      document.getElementById('paymentSection').style.display = "block";
+      document.getElementById('feeAgreementGroup').style.display = "block";
+      clearFileSelection();
+    }
   </script>
 </body>
 </html>
