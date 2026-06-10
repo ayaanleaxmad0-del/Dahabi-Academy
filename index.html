@@ -681,12 +681,51 @@
             <label for="phone">Phone Number</label>
             <div class="phone-flex">
               <select id="countryCode" name="countryCode" aria-label="Country Code" required>
-                <option value="+252">🇸🇴 SO (+252)</option>
-                <option value="+251">🇪🇹 ET (+251)</option>
-                <option value="+254">🇰🇪 KE (+254)</option>
-                <option value="+966">🇸🇦 SA (+966)</option>
-                <option value="+971">🇦🇪 AE (+971)</option>
-                <option value="+1">🇺🇸 US (+1)</option>
+<option value="+252">🇸🇴 So (+252)</option>
+<option value="+251">🇪🇹 Et (+251)</option>
+<option value="+253">🇩🇯 Dj (+253)</option>
+<option value="+254">🇰🇪 Ke (+254)</option>
+<option value="+256">🇺🇬 Ug (+256)</option>
+<option value="+255">🇹🇿 Tz (+255)</option>
+<option value="+27">🇿🇦 Sa (+27)</option>
+<option value="+20">🇪🇬 Eg (+20)</option>
+<option value="+249">🇸🇩 Sd (+249)</option>
+
+<option value="+966">🇸🇦 Ksa (+966)</option>
+<option value="+971">🇦🇪 Uae (+971)</option>
+<option value="+974">🇶🇦 Qa (+974)</option>
+<option value="+965">🇰🇼 Kw (+965)</option>
+<option value="+968">🇴🇲 Om (+968)</option>
+<option value="+973">🇧🇭 Bh (+973)</option>
+<option value="+962">🇯🇴 Jo (+962)</option>
+
+<option value="+44">🇬🇧 Uk (+44)</option>
+<option value="+46">🇸🇪 Se (+46)</option>
+<option value="+47">🇳🇴 No (+47)</option>
+<option value="+45">🇩🇰 Dk (+45)</option>
+<option value="+358">🇫🇮 Fi (+358)</option>
+<option value="+31">🇳🇱 Nl (+31)</option>
+<option value="+49">🇩🇪 De (+49)</option>
+<option value="+32">🇧🇪 Be (+32)</option>
+<option value="+33">🇫🇷 Fr (+33)</option>
+<option value="+39">🇮🇹 It (+39)</option>
+<option value="+41">🇨🇭 Ch (+41)</option>
+<option value="+43">🇦🇹 At (+43)</option>
+<option value="+34">🇪🇸 Es (+34)</option>
+<option value="+353">🇮🇪 Ie (+353)</option>
+
+<option value="+1">🇺🇸 Us (+1)</option>
+<option value="+1">🇨🇦 Ca (+1)</option>
+
+<option value="+61">🇦🇺 Au (+61)</option>
+<option value="+64">🇳🇿 Nz (+64)</option>
+
+<option value="+60">🇲🇾 My (+60)</option>
+<option value="+92">🇵🇰 Pk (+92)</option>
+<option value="+90">🇹🇷 Tr (+90)</option>
+<option value="+86">🇨🇳 Cn (+86)</option>
+<option value="+91">🇮🇳 In (+91)</option>
+
               </select>
               <input type="text" id="phone" name="phone" placeholder="61xxxxxxx" pattern="[0-9]{9}" maxlength="9" required>
             </div>
@@ -741,12 +780,31 @@
           <div class="input-group">
             <label for="referralSource">Sidee link-ga Diwangalinta Dahabi Academy Kugu soogaarey ama Aad ku heshey?</label>
             <select id="referralSource" name="referralSource" required>
-              <option value="">-- Dooro mid ka mid ah --</option>
-              <option value="Facebook">Facebook</option>
-              <option value="TikTok">TikTok</option>
-              <option value="WhatsApp Group">WhatsApp Group</option>
-              <option value="Saaxiib">Saaxiib ayaa ii soo diray</option>
-              <option value="Kale">Si kale</option>
+<option value="">-- Dooro mid ka mid ah --</option>
+
+<option value="facebook">Facebook</option>
+<option value="instagram">Instagram</option>
+<option value="tiktok">TikTok</option>
+<option value="whatsapp">WhatsApp</option>
+<option value="whatsapp_group">WhatsApp Group</option>
+<option value="telegram">Telegram</option>
+<option value="youtube">YouTube</option>
+<option value="x">X (Twitter)</option>
+
+<option value="snapchat">Snapchat</option>
+<option value="linkedin">LinkedIn</option>
+
+<option value="google_search">Google Search</option>
+<option value="website">Website</option>
+
+<option value="friend">Saaxiib ayaa ii soo diray</option>
+<option value="school">School / Macalin</option>
+<option value="poster">Poster / Banner</option>
+
+<option value="tiktok_ads">TikTok Ads</option>
+<option value="facebook_ads">Facebook Ads</option>
+
+<option value="other">Si kale</option>
             </select>
             <div class="error-msg" id="error-referralSource" role="alert">Fadlan noo sheeg qaabka aad ku heshay link-ga</div>
           </div>
@@ -782,7 +840,7 @@
           </div>
 
           <div class="input-group" id="feeAgreementGroup">
-            <span id="feeAgreementLabel" style="font-size: var(--font-label); font-weight: 600; color: #4a5568; display: block; margin-bottom: 6px;">Ma Aqbashey in bishii lagaaqaadayo Qidmad dhan $7?</span>
+            <span id="feeAgreementLabel" style="font-size: var(--font-label); font-weight: 600; color: #4a5568; display: block; margin-bottom: 6px;">Ma Aqbashey in bishii lagaaqaadayo Khidmad dhan $7?</span>
             <div class="radio-container-custom" role="radiogroup" aria-labelledby="feeAgreementLabel">
               <div class="radio-option-custom">
                 <input type="radio" id="feeYes" name="feeAgreement" value="Haa" required>
@@ -884,16 +942,16 @@ Upload Payment Screenshot</label>
 
     const coursePriceDetails = {
       "computer": { current: "$0.00 USD", original: "$0.00 USD" },
-      "photoshop": { current: "$14.00 USD", original: "$25.00 USD" },
-      "illustrator": { current: "$14.00 USD", original: "$25.00 USD" },
-      "indesign": { current: "$14.00 USD", original: "$25.00 USD" },
-      "premier": { current: "$14.00 USD", original: "$25.00 USD" },
-      "aftereffects": { current: "$14.00 USD", original: "$25.00 USD" },
-      "motion": { current: "$14.00 USD", original: "$25.00 USD" },
-      "webdesign": { current: "$14.00 USD", original: "$25.00 USD" },
-      "programming": { current: "$14.00 USD", original: "$25.00 USD" },
-      "ai": { current: "$14.00 USD", original: "$25.00 USD" },
-      "english": { current: "$14.00 USD", original: "$25.00 USD" }
+      "photoshop": { current: "$7.00 USD", original: "$25.00 USD" },
+      "illustrator": { current: "$7.00 USD", original: "$25.00 USD" },
+      "indesign": { current: "$7.00 USD", original: "$25.00 USD" },
+      "premier": { current: "$10.00 USD", original: "$25.00 USD" },
+      "aftereffects": { current: "$10.00 USD", original: "$25.00 USD" },
+      "motion": { current: "$10.00 USD", original: "$25.00 USD" },
+      "webdesign": { current: "$14.99 USD", original: "$25.00 USD" },
+      "programming": { current: "$14.99 USD", original: "$25.00 USD" },
+      "ai": { current: "$6.99 USD", original: "$25.00 USD" },
+      "english": { current: "$6.99 USD", original: "$25.00 USD" }
     };
 
     // FUNCTIO-NADA OO WINDOWS LA SAARAY SI HTML-KU U ARKO
@@ -1109,6 +1167,7 @@ Upload Payment Screenshot</label>
         if (selectedCourse !== 'computer' && receiptInput && receiptInput.files.length > 0) {
           receiptBase64 = await convertFileToBase64(receiptInput.files[0]);
         }
+        
 
         const registrationData = {
           studentID: generatedStudentID,
@@ -1271,3 +1330,4 @@ Upload Payment Screenshot</label>
   </script>
 </body>
 </html>
+
